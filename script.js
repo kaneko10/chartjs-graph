@@ -1,9 +1,17 @@
 var data = {
-    labels: ["1月", "2月", "3月", "4月", "5月"],
+    labels: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
     datasets: [{
         label: '販売台数',
-        data: [880, 740, 900, 520, 930],
+        data: [880, 740, 900, 520, 930, 780, 850, 910, 670, 720, 890, 950],
         borderColor: 'rgba(255, 100, 100, 1)',
+        lineTension: 0,
+        fill: false,
+        borderWidth: 3
+    },
+    {
+        label: '訪問者数',
+        data: [1200, 1000, 1300, 800, 1100, 950, 1000, 1200, 850, 980, 1050, 1120],
+        borderColor: 'rgba(54, 162, 235, 1)',
         lineTension: 0,
         fill: false,
         borderWidth: 3
