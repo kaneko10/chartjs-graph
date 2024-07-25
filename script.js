@@ -129,13 +129,26 @@ var options = {
                 mode: 'xy',
                 wheel: {
                     enabled: true,
+                    modifierKey: 'ctrl', // CTRLキーでズームを有効化
                     speed: 0.001 // ズーム速度を設定
                 },
                 pinch: {
                     enabled: true,
                     speed: 0.001 // ピンチジェスチャーのズーム速度を設定
                 },
-                onZoom: function ({ chart }) { console.log(`Zoom level: ${chart.zoom}`); },
+                onZoom: function ({ chart }) {
+                    // ズームイベント時のカスタム処理
+                    const activeElement = chart.getActiveElements()[0];
+                    if (activeElement) {
+                        const index = activeElement.index;
+                        const datasetIndex = activeElement.datasetIndex;
+                        console.log(`Zooming on: ${chart.data.labels[index]}, dataset: ${chart.data.datasets[datasetIndex].label}`);
+                    }
+                },
+                onZoomComplete: function ({ chart }) {
+                    // ズーム完了時のカスタム処理
+                    console.log('Zoom complete');
+                }
             }
         },
         verticalLinePlugin: true
