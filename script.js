@@ -160,9 +160,22 @@ var options = {
         setLineDash : [2,2]
     }
 };
+
 var ctx = document.getElementById("chart").getContext("2d");
 var chart = new Chart(ctx, {
     type: 'line',
     data: data,
     options: options
+});
+
+// チェックボックスのイベントリスナー
+document.getElementById('toggleSales').addEventListener('change', function () {
+    var salesDataset = chart.data.datasets[0];
+    salesDataset.hidden = !this.checked;
+    chart.update();
+});
+document.getElementById('toggleVisitors').addEventListener('change', function () {
+    var visitorsDataset = chart.data.datasets[1];
+    visitorsDataset.hidden = !this.checked;
+    chart.update();
 });
