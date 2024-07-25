@@ -119,6 +119,25 @@ var options = {
                 tooltipEl.style.pointerEvents = 'none';
             }
         },
+        zoom: {
+            pan: {
+                enabled: true,
+                mode: 'xy'
+            },
+            zoom: {
+                enabled: true,
+                mode: 'xy',
+                wheel: {
+                    enabled: true,
+                    speed: 0.001 // ズーム速度を設定
+                },
+                pinch: {
+                    enabled: true,
+                    speed: 0.001 // ピンチジェスチャーのズーム速度を設定
+                },
+                onZoom: function ({ chart }) { console.log(`Zoom level: ${chart.zoom}`); },
+            }
+        },
         verticalLinePlugin: true
     },
     verticalLinePlugin: {
