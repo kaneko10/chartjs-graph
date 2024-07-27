@@ -12,6 +12,7 @@ Chart.register({
         }
     },
     afterDraw : function(chart) {
+        var ctx = chart.ctx;  // ここでctxをchart.ctxから取得する
         var chartArea = chart.chartArea;
         var x = chart.options.verticalLinePlugin.x;
         if (!isNaN(x)) {
