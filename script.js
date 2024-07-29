@@ -118,6 +118,9 @@ fetch('logit_output.json')
                             modifierKey: 'ctrl',
                             speed: 0.01
                         },
+                        drag: {
+                            enabled: false,
+                        },
                         mode: 'xy',
                         overScaleMode: 'xy',
                     }
@@ -163,6 +166,10 @@ fetch('logit_output.json')
             chart.options.scales.x.min = Math.max(0, mid - newRange / 2);
             chart.options.scales.x.max = Math.min(chart.data.labels.length - 1, mid + newRange / 2);
             chart.update();
+        }
+
+        window.resetZoom = function() {
+            chart.resetZoom();
         }
     })
     .catch(error => console.error('Error loading JSON data:', error));
