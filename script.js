@@ -1,5 +1,5 @@
 // JSONファイルからデータを取得する
-fetch('output.json')
+fetch('logit_output.json')
     .then(response => response.json())
     .then(jsonData => {
         // JSONから取得したデータをChart.jsに適用
@@ -73,7 +73,16 @@ fetch('output.json')
                             innerHtml += '</thead><tbody>';
 
                             bodyLines.forEach(function (body, i) {
-                                innerHtml += '<tr><td>' + body + '<br><img src="frame_180.jpg" width="200" height="200"></td></tr>';
+                                // x軸の値を取得
+                                var index = tooltipModel.dataPoints[0].dataIndex;
+                                var xValue = context.chart.data.labels[index];
+
+                                // x軸の値に基づいて画像ファイル名を決定
+                                var imageDir = 'images/'
+                                var imageName = 'frame_' + xValue + '.jpg';
+                                var imagePath = imageDir + imageName
+
+                                innerHtml += '<tr><td>' + body + '<br><img src="' + imagePath + '" width="200" height="200"></td></tr>';
                             });
                             innerHtml += '</tbody>';
 
