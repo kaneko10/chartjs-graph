@@ -1,19 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
 </head>
 
 <div class="chart">
-    <canvas id="chart"></canvas>
-</div>
+        <canvas id="chart"></canvas>
+    </div>
+        
+    <button onclick="zoomIn()">Zoom In</button>
+    <button onclick="zoomOut()">Zoom Out</button>
+</body>
 
 <!--最新-->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!--v3-v4用-->
 <script src="./chartjs-custom-plugin-vertical-line-v3.js"></script>
-
+<!-- パン操作・ピンチ操作に対応する場合はHammer.jsを先に読み込む -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.2.1/dist/chartjs-plugin-zoom.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 <script src="./script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/moment-mini@2.24.0/moment.min.js"></script>
 <style src="./style.css"></style>
+</html>

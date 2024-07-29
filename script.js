@@ -15,7 +15,9 @@ fetch('logit_output.json')
                     title: {
                         display: true,
                         text: '月'
-                    }
+                    },
+                    min: jsonData.labels[0],
+                    max: jsonData.labels[jsonData.labels.length - 1],
                 },
                 y: {
                     display: true,
@@ -101,33 +103,24 @@ fetch('logit_output.json')
                 zoom: {
                     pan: {
                         enabled: true,
-                        mode: 'xy'
+                        mode: 'xy',
+                        threshold: 5,
+                        overScaleMode: 'xy',
+                        rangeMin: {
+                            x: jsonData.labels[0]
+                        },
+                        rangeMax: {
+                            x: jsonData.labels[jsonData.labels.length - 1]
+                        }
                     },
                     zoom: {
-                        enabled: true,
-                        mode: 'xy',
                         wheel: {
                             enabled: true,
-                            speed: 0.001 // ズーム速度を設定
+                            modifierKey: 'ctrl',
+                            speed: 0.01
                         },
-                        pinch: {
-                            enabled: true,
-                            speed: 0.001 // ピンチジェスチャーのズーム速度を設定
-                        },
-                        mode: function ({ chart }) {
-                            var chartArea = chart.chartArea;
-                            var activeElements = chart.getActiveElements();
-                            var mouseX = activeElements.length ? activeElements[0].element.x : null;
-                            var mouseY = activeElements.length ? activeElements[0].element.y : null;
-
-                            if (mouseX !== null && mouseX >= chartArea.left && mouseX <= chartArea.right) {
-                                return 'x';
-                            } else if (mouseY !== null && mouseY >= chartArea.top && mouseY <= chartArea.bottom) {
-                                return 'y';
-                            } else {
-                                return 'xy';
-                            }
-                        }
+                        mode: 'xy',
+                        overScaleMode: 'xy',
                     }
                 },
                 verticalLinePlugin: true
@@ -145,5 +138,32 @@ fetch('logit_output.json')
             data: data,
             options: options
         });
+
+        // ズームイン・ズームアウトの範囲を調整する変数
+        var zoomFactor = 0.2;
+
+        // ズームイン関数
+        window.zoomIn = function zoomIn() {
+            var xScale = chart.scales.x;
+            var range = xScale.max - xScale.min;
+            var mid = (xScale.min + xScale.max) / 2;
+            var newRange = range * (1 - zoomFactor);
+
+            chart.options.scales.x.min = Math.max(0, mid - newRange / 2);
+            chart.options.scales.x.max = Math.min(chart.data.labels.length - 1, mid + newRange / 2);
+            chart.update();
+        }
+
+        // ズームアウト関数
+        window.zoomOut = function zoomOut() {
+            var xScale = chart.scales.x;
+            var range = xScale.max - xScale.min;
+            var mid = (xScale.min + xScale.max) / 2;
+            var newRange = range * (1 + zoomFactor);
+
+            chart.options.scales.x.min = Math.max(0, mid - newRange / 2);
+            chart.options.scales.x.max = Math.min(chart.data.labels.length - 1, mid + newRange / 2);
+            chart.update();
+        }
     })
     .catch(error => console.error('Error loading JSON data:', error));
