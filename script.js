@@ -1,5 +1,5 @@
 // JSONファイルからデータを取得する
-fetch('data.json')
+fetch('output.json')
     .then(response => response.json())
     .then(jsonData => {
         // JSONから取得したデータをChart.jsに適用
