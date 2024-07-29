@@ -141,33 +141,6 @@ fetch('logit_output.json')
             options: options
         });
 
-        // ズームイン・ズームアウトの範囲を調整する変数
-        var zoomFactor = 0.2;
-
-        // ズームイン関数
-        window.zoomIn = function zoomIn() {
-            var xScale = chart.scales.x;
-            var range = xScale.max - xScale.min;
-            var mid = (xScale.min + xScale.max) / 2;
-            var newRange = range * (1 - zoomFactor);
-
-            chart.options.scales.x.min = Math.max(0, mid - newRange / 2);
-            chart.options.scales.x.max = Math.min(chart.data.labels.length - 1, mid + newRange / 2);
-            chart.update();
-        }
-
-        // ズームアウト関数
-        window.zoomOut = function zoomOut() {
-            var xScale = chart.scales.x;
-            var range = xScale.max - xScale.min;
-            var mid = (xScale.min + xScale.max) / 2;
-            var newRange = range * (1 + zoomFactor);
-
-            chart.options.scales.x.min = Math.max(0, mid - newRange / 2);
-            chart.options.scales.x.max = Math.min(chart.data.labels.length - 1, mid + newRange / 2);
-            chart.update();
-        }
-
         window.resetZoom = function() {
             chart.resetZoom();
         }
