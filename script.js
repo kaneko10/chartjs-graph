@@ -136,17 +136,5 @@ fetch('output.json')
             data: data,
             options: options
         });
-
-        // チェックボックスのイベントリスナー
-        document.getElementById('toggleSales').addEventListener('change', function () {
-            var salesDataset = chart.data.datasets[0];
-            salesDataset.hidden = !this.checked;
-            chart.update();
-        });
-        document.getElementById('toggleVisitors').addEventListener('change', function () {
-            var visitorsDataset = chart.data.datasets[1];
-            visitorsDataset.hidden = !this.checked;
-            chart.update();
-        });
     })
     .catch(error => console.error('Error loading JSON data:', error));
