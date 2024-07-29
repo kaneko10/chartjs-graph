@@ -43,6 +43,7 @@ logit_data = {
             "label": col,
             "data": df[col].tolist(),
             "borderColor": emotion_colors[col.split('_')[1]],
+            "backgroundColor": emotion_colors[col.split('_')[1]].replace('0.4', '0.2'),
             "borderWidth": 2
         } for col in df.columns if col.startswith('logit_')
     ]

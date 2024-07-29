@@ -2,3 +2,13 @@
     max-width: 600px;
     max-height: 400px;
 }
+#legend {
+    display: flex;
+    flex-wrap: wrap;
+    /* 必要に応じて次の行に折り返す */
+}
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}

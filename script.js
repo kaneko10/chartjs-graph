@@ -145,5 +145,41 @@ fetch('logit_output.json')
         window.resetZoom = function() {
             chart.resetZoom();
         }
+
+        // チェックボックスの設定
+        var legend = document.getElementById('legend');
+
+        data.datasets.forEach(function (dataset, index) {
+            var label = dataset.label;
+
+            // チェックボックスとラベルを一緒にするコンテナ
+            var container = document.createElement('div');
+            container.className = 'legend-item';
+
+            var checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.name = 'dataset';
+            checkbox.value = index;
+            checkbox.id = 'checkbox-' + index;
+
+            var labelElement = document.createElement('label');
+            labelElement.htmlFor = 'checkbox-' + index;
+            labelElement.innerText = label;
+
+            checkbox.addEventListener('change', function () {
+                data.datasets[index].fill = checkbox.checked;
+                chart.update();
+            });
+
+            container.appendChild(checkbox);
+            container.appendChild(labelElement);
+            legend.appendChild(container);
+        });
+
+        // 初期状態で全てのfillをfalseに設定
+        data.datasets.forEach(function (ds) {
+            ds.fill = false;
+        });
+        chart.update();
     })
     .catch(error => console.error('Error loading JSON data:', error));

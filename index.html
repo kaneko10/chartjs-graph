@@ -2,12 +2,15 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="chart">
         <canvas id="myChart"></canvas>
         <button onclick="resetZoom(myChart);">Reset</button>
     </div>
+    <!-- 強調表示するためのチェックボックス用 -->
+    <div id="legend" class="legend"></div>
 </body>
 
 <!--最新-->
@@ -21,5 +24,4 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 <script src="./script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/moment-mini@2.24.0/moment.min.js"></script>
-<style src="./style.css"></style>
 </html>
