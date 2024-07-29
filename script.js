@@ -21,7 +21,6 @@ fetch('logit_output.json')
                 },
                 y: {
                     display: true,
-                    min: 0,
                     title: {
                         display: true,
                         text: '個'
