@@ -105,6 +105,7 @@ fetch('logit_output.json')
                         mode: 'xy',
                         threshold: 5,
                         overScaleMode: 'xy',
+                        speed: 1.2,
                         rangeMin: {
                             x: jsonData.labels[0]
                         },
@@ -116,7 +117,7 @@ fetch('logit_output.json')
                         wheel: {
                             enabled: true,
                             modifierKey: 'ctrl',
-                            speed: 0.01
+                            speed: 0.04
                         },
                         drag: {
                             enabled: false,
