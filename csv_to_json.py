@@ -60,7 +60,8 @@ logit_data = {
             "data": df1[col].tolist(),
             "borderColor": emotion_colors[col.split('_')[1]],
             "backgroundColor": emotion_colors[col.split('_')[1]].replace('0.4', '0.2'),
-            "borderWidth": 2
+            "borderWidth": 2,
+            "pointRadius": 1,
         } for col in logit_columns
     ]
 }
