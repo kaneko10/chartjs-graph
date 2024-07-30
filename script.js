@@ -1,5 +1,5 @@
 // JSONファイルからデータを取得する
-fetch('logit_output.json')
+fetch('logit_output1.json')
     .then(response => response.json())
     .then(jsonData => {
         // JSONから取得したデータをChart.jsに適用
@@ -14,20 +14,26 @@ fetch('logit_output.json')
                     display: true,
                     title: {
                         display: true,
-                        text: '月'
+                        text: 'Frame Number', // ラベルのテキスト
+                        color: 'black', // ラベルの色
+                        font: {
+                            size: 14 // ラベルのフォントサイズ
+                        }
                     },
-                    min: jsonData.labels[0],
-                    max: jsonData.labels[jsonData.labels.length - 1],
                 },
                 y: {
                     display: true,
                     title: {
                         display: true,
-                        text: '個'
+                        text: 'Probability',
+                        color: 'black', // ラベルの色
+                        font: {
+                            size: 14 // ラベルのフォントサイズ
+                        }
                     },
                     ticks: {
                         callback: function (value, index, ticks) {
-                            return value + '個';
+                            return value;
                         }
                     }
                 },
@@ -79,9 +85,9 @@ fetch('logit_output.json')
                                 var xValue = context.chart.data.labels[index];
 
                                 // x軸の値に基づいて画像ファイル名を決定
-                                var imageDir = 'images/'
+                                var imageDir = 'images/';
                                 var imageName = 'frame_' + xValue + '.jpg';
-                                var imagePath = imageDir + imageName
+                                var imagePath = imageDir + imageName;
 
                                 innerHtml += '<tr><td>' + body + '<br><img src="' + imagePath + '" width="200" height="200"></td></tr>';
                             });
@@ -107,10 +113,10 @@ fetch('logit_output.json')
                         overScaleMode: 'xy',
                         speed: 1.2,
                         rangeMin: {
-                            x: jsonData.labels[0]
+                            x: Math.min(...jsonData.labels)
                         },
                         rangeMax: {
-                            x: jsonData.labels[jsonData.labels.length - 1]
+                            x: Math.max(...jsonData.labels)
                         }
                     },
                     zoom: {
@@ -142,9 +148,9 @@ fetch('logit_output.json')
             options: options
         });
 
-        window.resetZoom = function() {
+        window.resetZoom = function () {
             chart.resetZoom();
-        }
+        };
 
         // チェックボックスの設定
         var legend = document.getElementById('legend');

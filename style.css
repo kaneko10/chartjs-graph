@@ -1,6 +1,6 @@
-.myChart {
-    max-width: 600px;
-    max-height: 400px;
+.chart {
+    width: 95%;
+    margin: 0 auto; /* 画面の中央に配置 */
 }
 #legend {
     display: flex;
