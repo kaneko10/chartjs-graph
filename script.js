@@ -1,9 +1,14 @@
+var chart;
+var data;
+var showIndex;
+var showBody;
+
 // JSONファイルからデータを取得する
 fetch('logit_output1.json')
     .then(response => response.json())
     .then(jsonData => {
         // JSONから取得したデータをChart.jsに適用
-        var data = {
+        data = {
             labels: jsonData.labels,
             datasets: jsonData.datasets
         };
@@ -69,6 +74,8 @@ fetch('logit_output1.json')
                                 var index = tooltipModel.dataPoints[0].dataIndex;
                                 var xValue = context.chart.data.labels[index];
                                 faceFrame(xValue, body[0])  // body[0]（凡例：x軸の値）
+                                showIndex = index
+                                showBody = body[0]
                             });
                         }
                     }
@@ -111,7 +118,7 @@ fetch('logit_output1.json')
         };
 
         var ctx = document.getElementById("myChart").getContext("2d");
-        var chart = new Chart(ctx, {
+        chart = new Chart(ctx, {
             type: 'line',
             data: data,
             options: options
@@ -158,3 +165,28 @@ fetch('logit_output1.json')
         chart.update();
     })
     .catch(error => console.error('Error loading JSON data:', error));
+
+// キーボードの矢印キーイベントをリッスン
+document.addEventListener('keydown', function (event) {
+    if (chart) {
+        if (event.key === 'ArrowRight') {
+            // 右矢印キーを押した場合
+            showIndex += 1;
+        } else if (event.key === 'ArrowLeft') {
+            // 左矢印キーを押した場合
+            showIndex -= 1;
+        }
+        var match = showBody.match(/^([\w]+):/);
+        if (match) {
+            var targetLabel = match[1];
+            var targetDataset = data.datasets.find(dataset => dataset.label === targetLabel);
+            if (targetDataset) {
+                var targetData = targetDataset.data[showIndex];
+                const body = targetLabel + ': ' + targetData
+                faceFrame(data.labels[showIndex], body);
+            } else {
+                console.log('Specified label not found');
+            }
+        }
+    }
+});
