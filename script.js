@@ -8,6 +8,19 @@ fetch('logit_output1.json')
             datasets: jsonData.datasets
         };
 
+        // ダミーデータを追加（画像の変化を見やすくするため）
+        var dummyDataset = {
+            label: 'dummy',
+            data: new Array(jsonData.labels.length).fill(0),
+            borderColor: 'rgba(223, 223, 223, 0.4)',
+            backgroundColor: 'rgba(223, 223, 223, 0.2)',
+            borderWidth: 0.1,
+            fill: false,
+            pointRadius: 1 // データポイントの大きさを指定
+        };
+
+        data.datasets.push(dummyDataset);
+
         var options = {
             scales: {
                 x: {
