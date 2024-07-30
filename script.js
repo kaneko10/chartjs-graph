@@ -16,7 +16,7 @@ fetch('logit_output1.json')
             backgroundColor: 'rgba(223, 223, 223, 0.2)',
             borderWidth: 0.1,
             fill: false,
-            pointRadius: 1 // データポイントの大きさを指定
+            pointRadius: 4 // データポイントの大きさを指定
         };
 
         data.datasets.push(dummyDataset);
@@ -48,7 +48,9 @@ fetch('logit_output1.json')
                         callback: function (value, index, ticks) {
                             return value;
                         }
-                    }
+                    },
+                    min: 0,
+                    max: 1,
                 },
             },
             plugins: {
@@ -59,63 +61,16 @@ fetch('logit_output1.json')
                 tooltip: {
                     enabled: false, // デフォルトのツールチップを無効化
                     external: function (context) {
-                        var tooltipEl = document.getElementById('chartjs-tooltip');
-
-                        if (!tooltipEl) {
-                            tooltipEl = document.createElement('div');
-                            tooltipEl.id = 'chartjs-tooltip';
-                            tooltipEl.innerHTML = '<table></table>';
-                            document.body.appendChild(tooltipEl);
-                        }
-
                         var tooltipModel = context.tooltip;
-
-                        if (tooltipModel.opacity === 0) {
-                            tooltipEl.style.opacity = 0;
-                            return;
-                        }
-                        tooltipEl.classList.remove('above', 'below', 'no-transform');
-                        if (tooltipModel.yAlign) {
-                            tooltipEl.classList.add(tooltipModel.yAlign);
-                        } else {
-                            tooltipEl.classList.add('no-transform');
-                        }
-
                         if (tooltipModel.body) {
-                            var titleLines = tooltipModel.title || [];
                             var bodyLines = tooltipModel.body.map(item => item.lines);
-
-                            var innerHtml = '<thead>';
-
-                            titleLines.forEach(function (title) {
-                                innerHtml += '<tr><th>' + title + '</th></tr>';
-                            });
-                            innerHtml += '</thead><tbody>';
-
                             bodyLines.forEach(function (body, i) {
                                 // x軸の値を取得
                                 var index = tooltipModel.dataPoints[0].dataIndex;
                                 var xValue = context.chart.data.labels[index];
-
-                                // x軸の値に基づいて画像ファイル名を決定
-                                var imageDir = 'images/';
-                                var imageName = 'frame_' + xValue + '.jpg';
-                                var imagePath = imageDir + imageName;
-
-                                innerHtml += '<tr><td>' + body + '<br><img src="' + imagePath + '" width="200" height="200"></td></tr>';
+                                faceFrame(xValue, body[0])  // body[0]（凡例：x軸の値）
                             });
-                            innerHtml += '</tbody>';
-
-                            var tableRoot = tooltipEl.querySelector('table');
-                            tableRoot.innerHTML = innerHtml;
                         }
-
-                        var position = context.chart.canvas.getBoundingClientRect();
-                        tooltipEl.style.opacity = 1;
-                        tooltipEl.style.position = 'absolute';
-                        tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
-                        tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
-                        tooltipEl.style.pointerEvents = 'none';
                     }
                 },
                 zoom: {
@@ -151,7 +106,8 @@ fetch('logit_output1.json')
                 color: 'black',
                 lineWidth: '1',
                 setLineDash: [2, 2]
-            }
+            },
+            animation: false
         };
 
         var ctx = document.getElementById("myChart").getContext("2d");
