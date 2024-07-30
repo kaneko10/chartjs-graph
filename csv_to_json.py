@@ -26,33 +26,18 @@ emotion_colors = {
     "Neutral": "rgba(128, 128, 128, 0.4)"       # グレー
 }
 
-# Softmax関数の定義
-def softmax(x):
-    e_x = np.exp(x - np.max(x))
-    return e_x / e_x.sum(axis=0)
-
 # logit列のみを選択してSoftmaxを適用
 logit_columns = [col for col in df.columns if col.startswith('logit_')]
-print(logit_columns, len(logit_columns))
 df1 = pd.DataFrame(index=range(df.shape[0]), columns=logit_columns)
-# df1[0] = [0, 1, 2, 3, 4, 5, 6]
 
 for i in range(df.shape[0]):
     ps = df.iloc[i].loc["logit_Surprise":"logit_Neutral"]
-    print(ps)
     if not pd.isna(ps[0]):
         ps = (F.softmax(torch.tensor(ps), dim=0)).numpy().tolist()
     else:
         ps = [0.0] * len(logit_columns)
     df2 = pd.DataFrame([ps], columns=logit_columns)
     df1.iloc[i] = df2.iloc[0]
-    # for label, p in zip(logit_columns, ps):
-    #     print(i, label, p)
-    #     print("a " + str(df1.iloc[i].loc[label]))
-    #     df1.iloc[i].loc[label] = p  # ロジットをソフトマックス関数で変換（0〜1の確率）
-    #     print("b " + str(df.iloc[i].loc[label]))
- 
-print(df1)
 
 # P_i, N_i, F_i のデータを含むJSONデータ作成
 pni_fi_data = {
@@ -66,7 +51,6 @@ pni_fi_data = {
     ]
 }
 
-# logit_ で始まるデータを含むJSONデータ作成
 # logit_ で始まるデータを含むJSONデータ作成
 logit_data = {
     "labels": labels,
