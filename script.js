@@ -1,8 +1,40 @@
-function drawGraph(filepath) {
+function drawGraph(filepath, index) {
     var chart;
     var data;
     var showIndex;
     var showBody;
+
+    // 新しいチャートセットの作成
+    var chartContainer = document.createElement('div');
+    chartContainer.className = 'chart';
+
+    // Canvasを作成
+    var canvas = document.createElement('canvas');
+    canvas.id = 'chart-' + index;
+    chartContainer.appendChild(canvas);
+
+    // リセットボタンの作成
+    var button = document.createElement('button');
+    button.textContent = 'Reset';
+    button.onclick = function () {
+        resetZoom(charts[index]);
+    };
+    chartContainer.appendChild(button);
+
+    // 凡例用のチェックボックス
+    var legendDiv = document.createElement('div');
+    legendDiv.id = 'legend-' + index;
+    legendDiv.className = 'legend';
+    chartContainer.appendChild(legendDiv);
+
+    // ツールチップ用のdiv
+    var tooltipDiv = document.createElement('div');
+    tooltipDiv.id = 'face-frame-' + index;
+    tooltipDiv.className = 'tooltip';
+    chartContainer.appendChild(tooltipDiv);
+
+    // メインのコンテナに追加
+    document.getElementById('charts').appendChild(chartContainer);
 
     // JSONファイルからデータを取得する
     fetch(filepath)
@@ -72,10 +104,10 @@ function drawGraph(filepath) {
                                 var bodyLines = tooltipModel.body.map(item => item.lines);
                                 bodyLines.forEach(function (body, i) {
                                     // x軸の値を取得
-                                    var index = tooltipModel.dataPoints[0].dataIndex;
-                                    var xValue = context.chart.data.labels[index];
-                                    faceFrame(xValue, body[0])  // body[0]（凡例：x軸の値）
-                                    showIndex = index
+                                    var dataIndex = tooltipModel.dataPoints[0].dataIndex;
+                                    var xValue = context.chart.data.labels[dataIndex];
+                                    faceFrame(xValue, body[0], index)  // body[0]（凡例：x軸の値）
+                                    showIndex = dataIndex
                                     showBody = body[0]
                                 });
                             }
@@ -118,7 +150,7 @@ function drawGraph(filepath) {
                 animation: false
             };
 
-            var ctx = document.getElementById("myChart").getContext("2d");
+            var ctx = document.getElementById('chart-' + index).getContext('2d');
             chart = new Chart(ctx, {
                 type: 'line',
                 data: data,
@@ -130,9 +162,8 @@ function drawGraph(filepath) {
             };
 
             // チェックボックスの設定
-            var legend = document.getElementById('legend');
-
-            data.datasets.forEach(function (dataset, index) {
+            var legendDiv = document.getElementById('legend-' + index);
+            data.datasets.forEach(function (dataset, datasetIndex) {
                 var label = dataset.label;
 
                 // チェックボックスとラベルを一緒にするコンテナ
@@ -141,22 +172,22 @@ function drawGraph(filepath) {
 
                 var checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
-                checkbox.name = 'dataset';
-                checkbox.value = index;
-                checkbox.id = 'checkbox-' + index;
+                checkbox.name = 'legend-' + index;
+                checkbox.value = datasetIndex;
+                checkbox.id = 'checkbox-legend-' + index + '-' + datasetIndex;
 
                 var labelElement = document.createElement('label');
-                labelElement.htmlFor = 'checkbox-' + index;
+                labelElement.htmlFor = 'checkbox-label-' + index + '-' + datasetIndex;
                 labelElement.innerText = label;
 
                 checkbox.addEventListener('change', function () {
-                    data.datasets[index].fill = checkbox.checked;
+                    data.datasets[datasetIndex].fill = checkbox.checked;
                     chart.update();
                 });
 
                 container.appendChild(checkbox);
                 container.appendChild(labelElement);
-                legend.appendChild(container);
+                legendDiv.appendChild(container);
             });
 
             // 初期状態で全てのfillをfalseに設定
@@ -184,7 +215,7 @@ function drawGraph(filepath) {
                 if (targetDataset) {
                     var targetData = targetDataset.data[showIndex];
                     const body = targetLabel + ': ' + targetData
-                    faceFrame(data.labels[showIndex], body);
+                    faceFrame(data.labels[showIndex], body, index);
                 } else {
                     console.log('Specified label not found');
                 }

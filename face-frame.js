@@ -1,5 +1,5 @@
-function faceFrame(frameNum, value) {
-    var tooltipEl = document.getElementById('face-frame');
+function faceFrame(frameNum, value, index) {
+    var tooltipEl = document.getElementById('face-frame-' + index);
 
     var innerHtml = '';
 
