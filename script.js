@@ -95,7 +95,7 @@ function drawGraph(filepath, index) {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'デバイス'
+                        text: filepath
                     },
                     tooltip: {
                         enabled: false, // デフォルトのツールチップを無効化
