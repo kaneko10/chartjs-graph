@@ -6,7 +6,8 @@ function drawGraph(filepath, index) {
 
     // 新しいチャートセットの作成
     var chartContainer = document.createElement('div');
-    chartContainer.className = 'chart';
+    chartContainer.className = 'chart-div';
+    chartContainer.id = 'chart-div' + index;
 
     // Canvasを作成
     var canvas = document.createElement('canvas');
@@ -222,4 +223,12 @@ function drawGraph(filepath, index) {
             }
         }
     });
+}
+
+function removeGraph(index) {
+    var parent = document.getElementById('charts');
+    var child = document.getElementById('chart-div' + index);
+    if (parent && child && parent.contains(child)) {
+        parent.removeChild(child);
+    }
 }

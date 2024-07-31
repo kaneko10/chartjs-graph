@@ -26,9 +26,12 @@ document.getElementById("file").addEventListener("change", (ev) => {
         labelElement.innerText = filename;
 
         checkbox.addEventListener('change', function () {
-            console.log(filenames[index])
-            const filepath = 'json/' + filenames[index];
-            drawGraph(filepath, index)
+            if (checkbox.checked) {
+                const filepath = 'json/' + filenames[index];
+                drawGraph(filepath, index);
+            } else {
+                removeGraph(index);
+            }
         });
 
         container.appendChild(checkbox);
