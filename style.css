@@ -2,7 +2,7 @@
     width: 95%;
     margin: 0 auto; /* 画面の中央に配置 */
 }
-#legend {
+.legend {
     display: flex;
     flex-wrap: wrap;
     /* 必要に応じて次の行に折り返す */
