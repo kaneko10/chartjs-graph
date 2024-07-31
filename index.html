@@ -5,12 +5,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <input id="file" type="file" name="upfile[]" webkitdirectory>
+
     <div class="chart">
         <canvas id="myChart"></canvas>
         <button onclick="resetZoom(myChart);">Reset</button>
     </div>
-    <!-- 強調表示するためのチェックボックス用 -->
-    <div id="legend" class="legend"></div>
+    
+    <div id="legend" class="legend"></div> <!-- 強調表示するためのチェックボックス -->
 
     <div id="face-frame" class="tooltip"></div>
 </body>
@@ -26,5 +28,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
 <script src="./script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/moment-mini@2.24.0/moment.min.js"></script>
+<script src="./file-list.js"></script>
 <script src="./face-frame.js"></script>
 </html>
