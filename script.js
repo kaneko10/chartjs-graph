@@ -227,7 +227,7 @@ function drawGraph(filepath, index) {
 
 function removeGraph(index) {
     var parent = document.getElementById('charts');
-    var child = document.getElementById('chart-div' + index);
+    var child = document.getElementById('chart-div-' + index);
     if (parent && child && parent.contains(child)) {
         parent.removeChild(child);
     }
