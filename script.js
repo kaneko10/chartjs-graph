@@ -5,6 +5,8 @@ function drawGraph(filepath, index) {
     var data;
     var showIndex;
     var showBody;
+    const fps = 30;
+    var firstFrameNum;
 
     // 新しいチャートセットの作成
     var chartContainer = document.createElement('div');
@@ -75,6 +77,7 @@ function drawGraph(filepath, index) {
             };
 
             data.datasets.push(dummyDataset);
+            firstFrameNum = data.labels[0];
 
             var options = {
                 scales: {
@@ -121,10 +124,11 @@ function drawGraph(filepath, index) {
                                 var bodyLines = tooltipModel.body.map(item => item.lines);
                                 bodyLines.forEach(function (body, i) {
                                     // x軸の値を取得
-                                    var dataIndex = tooltipModel.dataPoints[0].dataIndex;
-                                    var xValue = context.chart.data.labels[dataIndex];
-                                    faceFrame(xValue, body[0], index)  // body[0]（凡例：x軸の値）
-                                    showIndex = dataIndex
+                                    showIndex = tooltipModel.dataPoints[0].dataIndex;
+                                    var xValue = context.chart.data.labels[showIndex];
+                                    const passFrameNum = data.labels[showIndex] - firstFrameNum;
+                                    const passTime = passFrameNum / fps;
+                                    faceFrame(xValue, body[0], index, passTime);   // body[0]（凡例：x軸の値）
                                     showBody = body[0]
                                 });
                             }
@@ -230,7 +234,9 @@ function drawGraph(filepath, index) {
                 if (targetDataset) {
                     var targetData = targetDataset.data[showIndex];
                     const body = targetLabel + ': ' + targetData
-                    faceFrame(data.labels[showIndex], body, index);
+                    const passFrameNum = data.labels[showIndex] - firstFrameNum;
+                    const passTime = passFrameNum / fps;
+                    faceFrame(data.labels[showIndex], body, index, passTime);
                 } else {
                     console.log('Specified label not found');
                 }

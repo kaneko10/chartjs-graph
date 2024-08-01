@@ -1,4 +1,4 @@
-function faceFrame(frameNum, value, index) {
+function faceFrame(frameNum, value, index, time) {
     var tooltipEl = document.getElementById('face-frame-' + index);
     var baseDiv = document.getElementById('canvas-container-' + index);
     var baseRect = baseDiv.getBoundingClientRect();
@@ -10,7 +10,8 @@ function faceFrame(frameNum, value, index) {
     var imageName = 'frame_' + frameNum + '.jpg';
     var imagePath = imageDir + imageName;
 
-    innerHtml += '<p>' + frameNum + '</p>';
+    innerHtml += '<p>time: ' + time.toFixed(3) + '</p>';
+    innerHtml += '<p>frame: ' + frameNum + '</p>';
     innerHtml += '<p>' + value + '</p>';
     innerHtml += '<br><img src="' + imagePath + '" width="200" height="200">';
  
