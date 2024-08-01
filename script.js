@@ -1,3 +1,5 @@
+var chartsMap = new Map();
+
 function drawGraph(filepath, index) {
     var chart;
     var data;
@@ -40,9 +42,10 @@ function drawGraph(filepath, index) {
     // リセットボタンの作成
     var button = document.createElement('button');
     button.className = 'reset-button';
+    button.id = 'button-' + index;
     button.textContent = 'Reset';
     button.onclick = function () {
-        resetZoom(charts[index]);
+        resetZoom(chartsMap.get(index));
     };
     chartContainer.appendChild(button);
 
@@ -171,10 +174,7 @@ function drawGraph(filepath, index) {
                 data: data,
                 options: options
             });
-
-            window.resetZoom = function () {
-                chart.resetZoom();
-            };
+            chartsMap.set(index, chart)
 
             // チェックボックスの設定
             var legendDiv = document.getElementById('legend-' + index);
@@ -244,5 +244,10 @@ function removeGraph(index) {
     var child = document.getElementById('chart-div-' + index);
     if (parent && child && parent.contains(child)) {
         parent.removeChild(child);
+        chartsMap.delete(index);
     }
+}
+
+function resetZoom(chart) {
+    chart.resetZoom();
 }
