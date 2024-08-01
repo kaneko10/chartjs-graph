@@ -17,27 +17,29 @@ for csv_file in csv_files:
     csv_file_path = f'csv/{csv_file}'
     df = pd.read_csv(csv_file_path)
 
-    # 欠損データを"NaN"で埋める
-    df = df.fillna(math.nan)
+    # 欠損データをNoneで埋める
+    df = df.where(pd.notnull(df), None)
 
     # フレーム番号を抽出して整数に変換して"labels"に設定
     labels = df['Image'].apply(lambda x: int(x.split('_')[1].split('.')[0])).tolist()
 
     # 色と透明度の設定
     emotion_colors = {
-        "Surprise": "rgba(173, 216, 230, 0.4)",       # ライトブルー
+        "Surprise": "rgba(173, 216, 230, 0.4)",     # ライトブルー
         "Fear": "rgba(128, 0, 128, 0.4)",           # 紫色
         "Disgust": "rgba(85, 107, 47, 0.4)",        # ダークオリーブグリーン
         "Happiness": "rgba(255, 165, 0, 0.4)",      # オレンジ
         "Sadness": "rgba(0, 0, 255, 0.4)",          # 青
         "Anger": "rgba(255, 0, 0, 0.4)",            # 赤
-        "Neutral": "rgba(128, 128, 128, 0.4)"       # グレー
+        "Neutral": "rgba(128, 128, 128, 0.4)",      # グレー
+        "P_i": "rgba(0, 255, 0, 0.4)",              # 緑
+        "N_i": "rgba(255, 0, 0, 0.4)",              # 赤
+        "F_i": "rgba(255, 255, 0, 0.4)",            # 黄色
     }
 
     # logit列のみを選択してSoftmaxを適用
     logit_columns = [col for col in df.columns if col.startswith('logit_')]
     df1 = pd.DataFrame(index=range(df.shape[0]), columns=logit_columns)
-
     for i in range(df.shape[0]):
         ps = df.iloc[i].loc["logit_Surprise":"logit_Neutral"]
         if not pd.isna(ps[0]):
@@ -47,15 +49,43 @@ for csv_file in csv_files:
         df2 = pd.DataFrame([ps], columns=logit_columns)
         df1.iloc[i] = df2.iloc[0]
 
-    # P_i, N_i, F_i のデータを含むJSONデータ作成
-    pni_fi_data = {
+    # Noneの部分は0で埋める
+    other_columns = [col for col in df.columns if col in ['P_i', 'N_i', 'F_i']]
+    df3 = pd.DataFrame(index=range(df.shape[0]), columns=other_columns)
+    for i in range(df.shape[0]):
+        ps = df.iloc[i].loc["P_i":"F_i"]
+        if pd.isna(ps[0]):
+            ps = [0] * len(other_columns)
+        df2 = pd.DataFrame([ps], columns=other_columns)
+        df3.iloc[i] = df2.iloc[0]
+
+    # P_i, N_i のデータを含むJSONデータ作成
+    pi_ni_data = {
         "labels": labels,
         "datasets": [
             {
                 "label": col,
-                "data": df[col].tolist(),
-                "borderWidth": 2
-            } for col in ['P_i', 'N_i', 'F_i'] if col in df.columns
+                "data": df3[col].tolist(),
+                "borderColor": emotion_colors[col],
+                "backgroundColor": emotion_colors[col].replace('0.4', '0.2'),
+                "borderWidth": 2,
+                "pointRadius": 1,
+            } for col in other_columns if col in ['P_i', 'N_i']
+        ]
+    }
+
+    # F_i のデータを含むJSONデータ作成
+    fi_data = {
+        "labels": labels,
+        "datasets": [
+            {
+                "label": col,
+                "data": df3[col].tolist(),
+                "borderColor": emotion_colors[col],
+                "backgroundColor": emotion_colors[col].replace('0.4', '0.2'),
+                "borderWidth": 2,
+                "pointRadius": 1,
+            } for col in other_columns if col in ['F_i']
         ]
     }
 
@@ -75,13 +105,17 @@ for csv_file in csv_files:
     }
 
     # JSONファイルに保存
-    pni_fi_json_path = f'json/pni_fi_{base_name}.json'
+    pi_ni_json_path = f'json/pi_ni_{base_name}.json'
+    fi_json_path = f'json/fi_{base_name}.json'
     logit_json_path = f'json/logit_{base_name}.json'
 
-    with open(pni_fi_json_path, 'w') as json_file:
-        json.dump(pni_fi_data, json_file, ensure_ascii=False, indent=4)
+    with open(pi_ni_json_path, 'w') as json_file:
+        json.dump(pi_ni_data, json_file, ensure_ascii=False, indent=4)
+
+    with open(fi_json_path, 'w') as json_file:
+        json.dump(fi_data, json_file, ensure_ascii=False, indent=4)
 
     with open(logit_json_path, 'w') as json_file:
         json.dump(logit_data, json_file, ensure_ascii=False, indent=4)
 
-    print(f'Data has been successfully converted and saved to {pni_fi_json_path} and {logit_json_path}')
+    print(f'Data has been successfully converted and saved to {pi_ni_json_path} and {logit_json_path}')
