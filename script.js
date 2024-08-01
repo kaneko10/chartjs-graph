@@ -9,11 +9,21 @@ function drawGraph(filepath, index) {
     chartContainer.className = 'chart-div';
     chartContainer.id = 'chart-div-' + index;
 
+    // Canvasのcontainerの作成
+    var canvasContainer = document.createElement('div');
+    canvasContainer.className = 'canvas-container';
+    canvasContainer.id = 'canvas-container' + index;
+    canvasContainer.style.position = "relative";
+    canvasContainer.style.float = "right";
+    canvasContainer.style.width = "80%";
+    canvasContainer.style.height = "100%";
+
     // Canvasを作成
     var canvas = document.createElement('canvas');
     canvas.className = 'canvas';
     canvas.id = 'chart-' + index;
-    chartContainer.appendChild(canvas);
+    canvasContainer.appendChild(canvas);
+    chartContainer.appendChild(canvasContainer);
 
     // リセットボタンの作成
     var button = document.createElement('button');
@@ -149,7 +159,8 @@ function drawGraph(filepath, index) {
                     lineWidth: '1',
                     setLineDash: [2, 2]
                 },
-                animation: false
+                animation: false,
+                maintainAspectRatio: false  // サイズ変更時のアスペクト比を維持するかどうか
             };
 
             var ctx = document.getElementById('chart-' + index).getContext('2d');

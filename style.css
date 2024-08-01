@@ -9,14 +9,15 @@
     /* display: flex;   縦に並べる */
     flex-wrap: wrap; /* 必要に応じて次の行に折り返す */
     position: relative;
+    width: 20%;
 }
 .legend-item {
     /* display: flex;   縦に並べる */
     align-items: center;
     margin-right: 10px;
 }
-.canvas {
+/* .canvas {
     position: relative;
     float: right;
     width: 80%;
-}
+} */
