@@ -11,6 +11,7 @@ function drawGraph(filepath, index) {
 
     // Canvasを作成
     var canvas = document.createElement('canvas');
+    canvas.className = 'canvas';
     canvas.id = 'chart-' + index;
     chartContainer.appendChild(canvas);
 

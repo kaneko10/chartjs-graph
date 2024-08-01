@@ -1,14 +1,22 @@
-.chart {
-    width: 95%;
-    margin: 0 auto; /* 画面の中央に配置 */
+.chart-div {
+    width: 98vw;   /* 画面の横幅いっぱい */
+    height: 50vh;   /* 画面の縦の半分 */
+    background-color: #f0f0f0;  /* 背景色を設定（任意） */
+    /* margin-bottom: 100px; /* 各 .chart 要素の下にスペースを設定 */
+    position: relative;
 }
 .legend {
-    display: flex;
-    flex-wrap: wrap;
-    /* 必要に応じて次の行に折り返す */
+    /* display: flex;   縦に並べる */
+    flex-wrap: wrap; /* 必要に応じて次の行に折り返す */
+    position: relative;
 }
 .legend-item {
-    display: flex;
+    /* display: flex;   縦に並べる */
     align-items: center;
     margin-right: 10px;
+}
+.canvas {
+    position: relative;
+    float: right;
+    width: 80%;
 }
