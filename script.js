@@ -107,8 +107,8 @@ function drawGraph(filepath, index) {
                                 return value;
                             }
                         },
-                        min: 0,
-                        max: 1,
+                        min: Math.floor(Math.min(...data.datasets[0].data)),
+                        max: Math.ceil(Math.max(...data.datasets[0].data)),
                     },
                 },
                 plugins: {
