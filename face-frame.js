@@ -1,6 +1,6 @@
 function faceFrame(frameNum, value, index) {
     var tooltipEl = document.getElementById('face-frame-' + index);
-    var baseDiv = document.getElementById('chart-' + index);
+    var baseDiv = document.getElementById('canvas-container-' + index);
     var baseRect = baseDiv.getBoundingClientRect();
 
     var innerHtml = '';
@@ -16,9 +16,9 @@ function faceFrame(frameNum, value, index) {
  
     tooltipEl.innerHTML = innerHtml;
 
-    tooltipEl.style.opacity = 1;
-    tooltipEl.style.position = 'absolute';
-    tooltipEl.style.left = '50px';
-    tooltipEl.style.top = (baseRect.top + document.documentElement.scrollTop) + 'px';
-    tooltipEl.style.pointerEvents = 'none';
+    // tooltipEl.style.opacity = 1;
+    // tooltipEl.style.position = 'absolute';
+    // tooltipEl.style.left = '50px';
+    // tooltipEl.style.top = (baseRect.top + document.documentElement.scrollTop) + 'px';
+    // tooltipEl.style.pointerEvents = 'none';
 }

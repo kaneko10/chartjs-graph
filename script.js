@@ -9,14 +9,20 @@ function drawGraph(filepath, index) {
     chartContainer.className = 'chart-div';
     chartContainer.id = 'chart-div-' + index;
 
+    // ツールチップ用のdiv
+    var tooltipDiv = document.createElement('div');
+    tooltipDiv.id = 'face-frame-' + index;
+    tooltipDiv.className = 'tooltip';
+    chartContainer.appendChild(tooltipDiv);
+
     // Canvasのcontainerの作成
     var canvasContainer = document.createElement('div');
     canvasContainer.className = 'canvas-container';
-    canvasContainer.id = 'canvas-container' + index;
+    canvasContainer.id = 'canvas-container-' + index;
     canvasContainer.style.position = "relative";
     canvasContainer.style.float = "right";
     canvasContainer.style.width = "80%";
-    canvasContainer.style.height = "100%";
+    canvasContainer.style.height = "90%";
 
     // Canvasを作成
     var canvas = document.createElement('canvas');
@@ -25,25 +31,21 @@ function drawGraph(filepath, index) {
     canvasContainer.appendChild(canvas);
     chartContainer.appendChild(canvasContainer);
 
-    // リセットボタンの作成
-    var button = document.createElement('button');
-    button.textContent = 'Reset';
-    button.onclick = function () {
-        resetZoom(charts[index]);
-    };
-    chartContainer.appendChild(button);
-
     // 凡例用のチェックボックス
     var legendDiv = document.createElement('div');
     legendDiv.id = 'legend-' + index;
     legendDiv.className = 'legend';
     chartContainer.appendChild(legendDiv);
 
-    // ツールチップ用のdiv
-    var tooltipDiv = document.createElement('div');
-    tooltipDiv.id = 'face-frame-' + index;
-    tooltipDiv.className = 'tooltip';
-    chartContainer.appendChild(tooltipDiv);
+    // リセットボタンの作成
+    var button = document.createElement('button');
+    button.className = 'reset-button';
+    button.textContent = 'Reset';
+    button.onclick = function () {
+        resetZoom(charts[index]);
+    };
+    chartContainer.appendChild(button);
+
 
     // メインのコンテナに追加
     document.getElementById('charts').appendChild(chartContainer);

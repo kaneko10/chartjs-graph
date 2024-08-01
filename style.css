@@ -6,13 +6,14 @@
     position: relative;
 }
 .legend {
-    /* display: flex;   縦に並べる */
+    display: flex; /* 横に並べる */
     flex-wrap: wrap; /* 必要に応じて次の行に折り返す */
     position: relative;
-    width: 20%;
+    width: 95%;
+    float: left;
 }
 .legend-item {
-    /* display: flex;   縦に並べる */
+    display: flex; /* 横に並べる */
     align-items: center;
     margin-right: 10px;
 }
@@ -21,3 +22,18 @@
     float: right;
     width: 80%;
 } */
+.reset-button {
+    width: 5%;
+    float: right;
+}
+.tooltip {
+    opacity: 1;
+    pointer-events: none;
+    position: relative;
+    width: 20%;
+    height: 90%;
+    float: left;
+}
+p {
+    margin: 5px 5px; /* 上下に20px、左右に0pxの余白を設定 */
+}
