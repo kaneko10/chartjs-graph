@@ -128,7 +128,7 @@ function drawGraph(filepath, graphID) {
                                     var xValue = context.chart.data.labels[showIndex];
                                     const passFrameNum = data.labels[showIndex] - firstFrameNum;
                                     const passTime = passFrameNum / fps;
-                                    faceFrame(xValue, body[0], graphID, passTime);   // body[0]（凡例：x軸の値）
+                                    faceFrame(filepath, xValue, body[0], graphID, passTime);   // body[0]（凡例：x軸の値）
                                     showBody = body[0]
                                 });
                             }
@@ -236,7 +236,7 @@ function drawGraph(filepath, graphID) {
                     const body = targetLabel + ': ' + targetData
                     const passFrameNum = data.labels[showIndex] - firstFrameNum;
                     const passTime = passFrameNum / fps;
-                    faceFrame(data.labels[showIndex], body, graphID, passTime);
+                    faceFrame(filepath, data.labels[showIndex], body, graphID, passTime);
                 } else {
                     console.log('Specified label not found');
                 }
