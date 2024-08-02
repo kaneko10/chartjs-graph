@@ -55,8 +55,9 @@ document.getElementById("file").addEventListener("change", (ev) => {
 
             checkbox.addEventListener('change', function () {
                 if (checkbox.checked) {
-                    const filepath = 'json/' + filename;
-                    drawGraph(filepath, `${groupKey}${index}`);
+                    const filepath = `json/${filename}`
+                    const graphKey = `${groupKey}${index}`
+                    drawGraph(filepath, graphKey);
                 } else {
                     removeGraph(`${groupKey}${index}`);
                 }
