@@ -56,10 +56,11 @@ document.getElementById("file").addEventListener("change", (ev) => {
             checkbox.addEventListener('change', function () {
                 if (checkbox.checked) {
                     const filepath = `json/${filename}`
-                    const graphKey = `${groupKey}${index}`
-                    drawGraph(filepath, graphKey);
+                    const graphID = `${groupKey}${index}`
+                    drawGraph(filepath, graphID);
                 } else {
-                    removeGraph(`${groupKey}${index}`);
+                    const graphID = `${groupKey}${index}`
+                    removeGraph(graphID);
                 }
             });
 

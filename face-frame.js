@@ -1,6 +1,6 @@
-function faceFrame(frameNum, value, index, time) {
-    var tooltipEl = document.getElementById('face-frame-' + index);
-    var baseDiv = document.getElementById('canvas-container-' + index);
+function faceFrame(frameNum, value, graphID, time) {
+    var tooltipEl = document.getElementById('face-frame-' + graphID);
+    var baseDiv = document.getElementById('canvas-container-' + graphID);
     var baseRect = baseDiv.getBoundingClientRect();
 
     var innerHtml = '';
