@@ -39,25 +39,25 @@ for csv_file in csv_files:
 
     # logit列のみを選択してSoftmaxを適用
     logit_columns = [col for col in df.columns if col.startswith('logit_')]
-    df1 = pd.DataFrame(index=range(df.shape[0]), columns=logit_columns)
+    df_logit = pd.DataFrame(index=range(df.shape[0]), columns=logit_columns)
     for i in range(df.shape[0]):
         ps = df.iloc[i].loc["logit_Surprise":"logit_Neutral"]
         if not pd.isna(ps[0]):
             ps = (F.softmax(torch.tensor(ps), dim=0)).numpy().tolist()
         else:
             ps = [0.0] * len(logit_columns)
-        df2 = pd.DataFrame([ps], columns=logit_columns)
-        df1.iloc[i] = df2.iloc[0]
+        df1 = pd.DataFrame([ps], columns=logit_columns)
+        df_logit.iloc[i] = df1.iloc[0]
 
     # Noneの部分は0で埋める
     other_columns = [col for col in df.columns if col in ['P_i', 'N_i', 'F_i']]
-    df3 = pd.DataFrame(index=range(df.shape[0]), columns=other_columns)
+    df_other = pd.DataFrame(index=range(df.shape[0]), columns=other_columns)
     for i in range(df.shape[0]):
         ps = df.iloc[i].loc["P_i":"F_i"]
         if pd.isna(ps[0]):
             ps = [0] * len(other_columns)
-        df2 = pd.DataFrame([ps], columns=other_columns)
-        df3.iloc[i] = df2.iloc[0]
+        df1 = pd.DataFrame([ps], columns=other_columns)
+        df_other.iloc[i] = df1.iloc[0]
 
     # P_i, N_i のデータを含むJSONデータ作成
     pi_ni_data = {
@@ -65,7 +65,7 @@ for csv_file in csv_files:
         "datasets": [
             {
                 "label": col,
-                "data": df3[col].tolist(),
+                "data": df_other[col].tolist(),
                 "borderColor": emotion_colors[col],
                 "backgroundColor": emotion_colors[col].replace('0.4', '0.2'),
                 "borderWidth": 2,
@@ -80,7 +80,7 @@ for csv_file in csv_files:
         "datasets": [
             {
                 "label": col,
-                "data": df3[col].tolist(),
+                "data": df_other[col].tolist(),
                 "borderColor": emotion_colors[col],
                 "backgroundColor": emotion_colors[col].replace('0.4', '0.2'),
                 "borderWidth": 2,
@@ -95,7 +95,7 @@ for csv_file in csv_files:
         "datasets": [
             {
                 "label": col,
-                "data": df1[col].tolist(),
+                "data": df_logit[col].tolist(),
                 "borderColor": emotion_colors[col.split('_')[1]],
                 "backgroundColor": emotion_colors[col.split('_')[1]].replace('0.4', '0.2'),
                 "borderWidth": 2,
