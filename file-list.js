@@ -32,13 +32,11 @@ document.getElementById("file").addEventListener("change", (ev) => {
     // 各グループごとに処理を行う
     Object.keys(groupedFiles).forEach(groupKey => {
         const files = groupedFiles[groupKey];
-        console.log(`Processing group: ${groupKey}`);
         // チェックボックス用のdiv
         var checkboxDiv = document.createElement('div');
         checkboxDiv.className = 'checkboxDiv';
 
         files.forEach(function (filename, index) {
-            console.log(`  - ${filename}`);
             // チェックボックスとラベルを一緒にするコンテナ
             var container = document.createElement('div');
             container.className = 'file-item';
