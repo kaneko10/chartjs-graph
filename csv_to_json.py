@@ -49,13 +49,13 @@ for csv_file in csv_files:
         df1 = pd.DataFrame([ps], columns=logit_columns)
         df_logit.iloc[i] = df1.iloc[0]
 
-    # Noneの部分は0で埋める
+    # logit以外の列
     other_columns = [col for col in df.columns if col in ['P_i', 'N_i', 'F_i']]
     df_other = pd.DataFrame(index=range(df.shape[0]), columns=other_columns)
     for i in range(df.shape[0]):
         ps = df.iloc[i].loc["P_i":"F_i"]
         if pd.isna(ps[0]):
-            ps = [0] * len(other_columns)
+            ps = [0] * len(other_columns)   # Noneの部分は0で埋める
         df1 = pd.DataFrame([ps], columns=other_columns)
         df_other.iloc[i] = df1.iloc[0]
 
