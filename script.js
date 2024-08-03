@@ -91,6 +91,13 @@ function drawGraph(filepath, graphID) {
                                 size: 14 // ラベルのフォントサイズ
                             }
                         },
+                        ticks: {
+                            maxRotation: 90,
+                            minRotation: 90,
+                            callback: function (value, index, ticks) {
+                                return `${jsonData.annotations[value]} - ${jsonData.labels[value]}`;
+                            }
+                        }
                     },
                     y: {
                         display: true,
