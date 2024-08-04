@@ -37,8 +37,9 @@ for csv_file in csv_files:
         "F_i": "rgba(255, 255, 0, 0.4)",            # 黄色
     }
 
-    # logit列のみを選択してSoftmaxを適用
     logit_columns = [col for col in df.columns if col.startswith('logit_')]
+
+    # logit列のみを選択してSoftmaxを適用
     df_logit = pd.DataFrame(index=range(df.shape[0]), columns=logit_columns)
     for i in range(df.shape[0]):
         ps = df.iloc[i].loc["logit_Surprise":"logit_Neutral"]
@@ -58,6 +59,9 @@ for csv_file in csv_files:
             ps = [0] * len(other_columns)   # Noneの部分は0で埋める
         df1 = pd.DataFrame([ps], columns=other_columns)
         df_other.iloc[i] = df1.iloc[0]
+
+    # スムージング
+    window_size = 10    # fps: 30
 
     # P_i, N_i のデータを含むJSONデータ作成
     pi_ni_data = {
@@ -96,6 +100,16 @@ for csv_file in csv_files:
             {
                 "label": col,
                 "data": df_logit[col].tolist(),
+                "borderColor": emotion_colors[col.split('_')[1]],
+                "backgroundColor": emotion_colors[col.split('_')[1]].replace('0.4', '0.2'),
+                "borderWidth": 2,
+                "pointRadius": 1,
+            } for col in logit_columns
+        ]
+          + [
+            {
+                "label": f'{col}_smooth',
+                "data": pd.Series(df_logit[col]).rolling(window=window_size).mean().fillna(0).tolist(), # NaNは0で置き換える
                 "borderColor": emotion_colors[col.split('_')[1]],
                 "backgroundColor": emotion_colors[col.split('_')[1]].replace('0.4', '0.2'),
                 "borderWidth": 2,
