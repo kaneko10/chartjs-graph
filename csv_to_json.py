@@ -60,9 +60,6 @@ for csv_file in csv_files:
         df1 = pd.DataFrame([ps], columns=other_columns)
         df_other.iloc[i] = df1.iloc[0]
 
-    # スムージング
-    window_size = 10    # fps: 30
-
     # P_i, N_i のデータを含むJSONデータ作成
     pi_ni_data = {
         "labels": labels,
@@ -106,7 +103,13 @@ for csv_file in csv_files:
                 "pointRadius": 1,
             } for col in logit_columns
         ]
-          + [
+    }
+
+    # スムージング
+    window_size = 10    # fps: 30
+    logit_smooth_data = {
+        "labels": labels,
+        "datasets": [
             {
                 "label": f'{col}_smooth',
                 "data": pd.Series(df_logit[col]).rolling(window=window_size).mean().fillna(0).tolist(), # NaNは0で置き換える
@@ -122,6 +125,7 @@ for csv_file in csv_files:
     pi_ni_json_path = f'json/pi_ni_{base_name}.json'
     fi_json_path = f'json/fi_{base_name}.json'
     logit_json_path = f'json/logit_{base_name}.json'
+    logit_json_smooth_path = f'json/logit_smooth_{base_name}.json'
 
     with open(pi_ni_json_path, 'w') as json_file:
         json.dump(pi_ni_data, json_file, ensure_ascii=False, indent=4)
@@ -131,5 +135,8 @@ for csv_file in csv_files:
 
     with open(logit_json_path, 'w') as json_file:
         json.dump(logit_data, json_file, ensure_ascii=False, indent=4)
+
+    with open(logit_json_smooth_path, 'w') as json_file:
+        json.dump(logit_smooth_data, json_file, ensure_ascii=False, indent=4)
 
     print(f'Data has been successfully converted and saved to {pi_ni_json_path} and {logit_json_path}')
