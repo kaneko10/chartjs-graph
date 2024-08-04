@@ -44,13 +44,34 @@ function drawGraph(filepath, graphID) {
     // リセットボタンの作成
     var button = document.createElement('button');
     button.className = 'reset-button';
-    button.id = 'button-' + graphID;
+    button.id = 'reset-' + graphID;
     button.textContent = 'Reset';
     button.onclick = function () {
         resetZoom(chartsMap.get(graphID));
     };
     chartContainer.appendChild(button);
 
+    // 範囲指定のための入力フィールドとボタンを作成
+    var rangeContainer = document.createElement('div');
+    rangeContainer.id = 'rangeDiv-' + graphID;
+    var minInput = document.createElement('input');
+    minInput.type = 'number';
+    minInput.id = `min-range-${graphID}`;
+    minInput.placeholder = 'Min range';
+    rangeContainer.appendChild(minInput);
+    var maxInput = document.createElement('input');
+    maxInput.type = 'number';
+    maxInput.id = `max-range-${graphID}`;
+    maxInput.placeholder = 'Max range';
+    rangeContainer.appendChild(maxInput);
+    var updateButton = document.createElement('button');
+    updateButton.textContent = 'Update Range';
+    updateButton.id = `updateButton-${graphID}`;
+    updateButton.onclick = function () {
+        updateRange(graphID);
+    };
+    rangeContainer.appendChild(updateButton);
+    chartContainer.appendChild(rangeContainer);
 
     // メインのコンテナに追加
     document.getElementById('charts').appendChild(chartContainer);
@@ -263,4 +284,15 @@ function removeGraph(graphID) {
 
 function resetZoom(chart) {
     chart.resetZoom();
+}
+
+// 範囲を更新する関数
+function updateRange(graphID) {
+    chart = chartsMap.get(graphID);
+    var minRange = document.getElementById(`min-range-${graphID}`).value;
+    var maxRange = document.getElementById(`max-range-${graphID}`).value;
+
+    chart.options.scales.x.min = minRange ? parseFloat(minRange) : undefined;
+    chart.options.scales.x.max = maxRange ? parseFloat(maxRange) : undefined;
+    chart.update();
 }
