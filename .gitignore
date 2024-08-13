@@ -1,1 +1,9 @@
 *.jpg
+*.png
+*.csv
+*.json
+.DS_Store
+images/
+json/
+csv/
+annotations/
