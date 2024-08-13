@@ -8,8 +8,8 @@ function orderGraphItems(filenames) {
     makeGraphItems(filenames, graphID);
 }
 
-function orderDrawGraph(filenames, filepath, selectedLabels, graphID) {
-    drawGraph(filepath, selectedLabels, graphID);
+function orderDrawGraph(filenames, filename, selectedLabels, graphID) {
+    drawGraph(filename, selectedLabels, graphID);
     orderGraphItems(filenames);
 }
 

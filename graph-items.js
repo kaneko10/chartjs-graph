@@ -76,8 +76,8 @@ function makeGraphItems(filenames, graphID) {
     drawButton.id = 'draw-' + graphID;
     drawButton.textContent = 'Draw';
     drawButton.onclick = function () {
-        const filepath = selectedNames[0];
-        orderDrawGraph(filenames, filepath, selectedData, graphID);
+        const filename = selectedNames[0];
+        orderDrawGraph(filenames, filename, selectedData, graphID);
     };
     chartContainer.appendChild(drawButton);
 
@@ -141,11 +141,10 @@ function makeGraphItems(filenames, graphID) {
         labelElement.innerText = personName;
 
         checkbox.addEventListener('change', function () {
-            const filepath = `json/${filename}`
             if (checkbox.checked) {
-                selectedNames.push(filepath);
+                selectedNames.push(filename);
             } else {
-                const index = selectedNames.indexOf(filepath);
+                const index = selectedNames.indexOf(filename);
                 if (index > -1) {
                     selectedNames.splice(index, 1);
                 }

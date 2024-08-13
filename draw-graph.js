@@ -1,6 +1,7 @@
 var chartsMap = new Map();
+var variables = new Map();
 
-function drawGraph(filepath, selectedLabels, graphID) {
+function drawGraph(filename, selectedLabels, graphID) {
     var chart;
     var data;
     var showIndex;
@@ -9,6 +10,7 @@ function drawGraph(filepath, selectedLabels, graphID) {
     var firstFrameNum;
 
     // JSONファイルからデータを取得する
+    const filepath = `json/${filename}`;
     fetch(filepath)
         .then(response => response.json())
         .then(jsonData => {
@@ -177,6 +179,15 @@ function drawGraph(filepath, selectedLabels, graphID) {
                 ds.fill = false;
             });
             chart.update();
+
+            // 利用できる変数リストをセット
+            const personName = filename.split('_').slice(-1)[0].replace('.json', '');
+            filteredDatasets.forEach(dataset => {
+                if (dataset.label != 'dummy') {
+                    variables.set(`${dataset.label}_${personName}`, dataset.data);
+                }
+            });
+            displayVariables()
         })
         .catch(error => console.error('Error loading JSON data:', error));
 
@@ -230,4 +241,17 @@ function updateRange(graphID) {
     chart.options.scales.x.min = minRange ? parseFloat(minRange) : undefined;
     chart.options.scales.x.max = maxRange ? parseFloat(maxRange) : undefined;
     chart.update();
+}
+
+// 利用可能な変数リストを表示
+function displayVariables() {
+    var variablesDiv = document.getElementById('variables');
+
+    // 変数の値を全て表示する
+    variables.forEach(function (value, key) {
+        var span = document.createElement('span');
+        span.textContent = key;
+        span.style.marginRight = '10px';
+        variablesDiv.appendChild(span);
+    });
 }
