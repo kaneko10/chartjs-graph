@@ -1,10 +1,31 @@
-function getCalculationResult() {
-    const formula = 'log(2 * P_i_XXX + N_i_XXX)';
-    let data = {};
+function getCalculationResult(variablesMap) {
+    const formula = 'log(2 * P_i_Morita + N_i_Morita)';
+    let results = [];
+    const minLength = getMinLength(variablesMap)
+    for (var i = 0; i < minLength; i++) {
+        let data = {};
+        variablesMap.forEach(function (value, key) {
+            data[key] = value[i];
+        });
+        const f_i = math.evaluate(formula, data);
+        results.push(f_i);
+    }
+    return results;
+}
 
-    variables.forEach(function (value, key) {
-        data[key] = value[0];
+// 最小の長さを求める関数
+function getMinLength(map) {
+    let minLength = Infinity;
+
+    map.forEach(function (value) {
+        if (Array.isArray(value)) {  // 値が配列かどうかを確認
+            const length = value.length;
+            if (length < minLength) {
+                minLength = length;  // 最小の長さを更新
+            }
+        }
     });
-    const f_i = math.evaluate(formula, data);
-    console.log(f_i);
+    console.log(`minLength: ${minLength}`);
+
+    return minLength;
 }

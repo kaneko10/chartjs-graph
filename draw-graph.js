@@ -257,5 +257,6 @@ function displayVariables() {
 }
 
 function evaluateFormula(graphID) {
-    getCalculationResult();
+    const results = getCalculationResult(variables);
+    console.log(results);
 }
