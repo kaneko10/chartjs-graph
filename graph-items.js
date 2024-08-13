@@ -17,7 +17,7 @@ function makeGraphItems(filenames, graphID) {
     canvasContainer.style.position = "relative";
     canvasContainer.style.float = "right";
     canvasContainer.style.width = "80%";
-    canvasContainer.style.height = "90%";
+    canvasContainer.style.height = "60%";
 
     // Canvasを作成
     var canvas = document.createElement('canvas');

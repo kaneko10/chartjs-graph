@@ -1,6 +1,6 @@
 .chart-div {
     width: 98vw;   /* 画面の横幅いっぱい */
-    height: 50vh;   /* 画面の縦の半分 */
+    height: 70vh;   /* 画面の縦の半分 */
     background-color: #f0f0f0;  /* 背景色を設定（任意） */
     /* margin-bottom: 100px; /* 各 .chart 要素の下にスペースを設定 */
     position: relative;
@@ -31,9 +31,30 @@
     pointer-events: none;
     position: relative;
     width: 20%;
-    height: 90%;
+    height: 60%;
     float: left;
 }
 p {
     margin: 5px 5px; /* 上下に20px、左右に0pxの余白を設定 */
+}
+.file-list {
+    display: flex;  /* 横に並べる */
+    flex-wrap: wrap;    /* 必要に応じて次の行に折り返す */
+    position: relative;
+    width: 90%;
+    float: left;
+}
+.file-item {
+    display: flex;  /* 横に並べる */
+}
+.data-item {
+    display: flex;  /* 横に並べる */
+}
+.delete-button {
+    width: 5%;
+    float: right;
+}
+.draw-button {
+    width: 5%;
+    float: right;
 }
