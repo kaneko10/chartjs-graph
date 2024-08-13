@@ -77,7 +77,7 @@ function makeGraphItems(filenames, graphID) {
     drawButton.textContent = 'Draw';
     drawButton.onclick = function () {
         const filepath = selectedNames[0];
-        orderDrawGraph(filenames, filepath, graphID);
+        orderDrawGraph(filenames, filepath, selectedData, graphID);
     };
     chartContainer.appendChild(drawButton);
 
@@ -134,6 +134,45 @@ function makeGraphItems(filenames, graphID) {
         container.appendChild(labelElement);
         checkboxDiv.appendChild(container);
         
+        listDiv.appendChild(checkboxDiv);
+    });
+
+    const dataList = ['P_i', 'N_i', 'F_i', 'Surprise', 'Fear', 'Disgust', 'Happiness', 'Sadness', 'Anger', 'Neutral']
+    const selectedData = [];
+    dataList.forEach(function (data, index) {
+        // チェックボックス用のdiv
+        var checkboxDiv = document.createElement('div');
+        checkboxDiv.className = 'checkboxDiv';
+
+        // チェックボックスとラベルを一緒にするコンテナ
+        var container = document.createElement('div');
+        container.className = 'data-item';
+
+        var checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.name = graphID;
+        checkbox.value = data;
+        checkbox.id = 'checkbox-' + graphID + data;
+
+        var labelElement = document.createElement('label');
+        labelElement.htmlFor = 'checkbox-' + graphID + data;
+        labelElement.innerText = data;
+
+        checkbox.addEventListener('change', function () {
+            if (checkbox.checked) {
+                selectedData.push(data);
+            } else {
+                const index = selectedData.indexOf(data);
+                if (index > -1) {
+                    selectedData.splice(index, 1);
+                }
+            }
+        });
+
+        container.appendChild(checkbox);
+        container.appendChild(labelElement);
+        checkboxDiv.appendChild(container);
+
         listDiv.appendChild(checkboxDiv);
     });
 }

@@ -1,6 +1,6 @@
 var chartsMap = new Map();
 
-function drawGraph(filepath, graphID) {
+function drawGraph(filepath, selectedLabels, graphID) {
     var chart;
     var data;
     var showIndex;
@@ -12,9 +12,6 @@ function drawGraph(filepath, graphID) {
     fetch(filepath)
         .then(response => response.json())
         .then(jsonData => {
-            // 使用したいラベルを指定
-            const selectedLabels = ['Happiness', 'Sadness', 'Anger', 'Disgust', 'Fear', 'Neutral', 'Surprise'];
-
             // ラベルで選択したデータセットのみを抽出
             const filteredDatasets = jsonData.datasets.filter(dataset => selectedLabels.includes(dataset.label));
 
