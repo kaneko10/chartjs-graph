@@ -104,7 +104,7 @@ for csv_file in csv_files:
         "labels": labels,
         "datasets": [
             {
-                "label": col,
+                "label": col.replace("logit_", ""),  # "logit_" を除いた名前を代入,
                 "data": df_logit[col].tolist(),
                 "borderColor": emotion_colors[col.split('_')[1]],
                 "backgroundColor": emotion_colors[col.split('_')[1]].replace('0.4', '0.2'),
