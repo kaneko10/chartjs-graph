@@ -33,14 +33,14 @@ function makeGraphItems(filenames, graphID) {
     chartContainer.appendChild(legendDiv);
 
     // リセットボタンの作成
-    var button = document.createElement('button');
-    button.className = 'reset-button';
-    button.id = 'reset-' + graphID;
-    button.textContent = 'Reset';
-    button.onclick = function () {
+    var resetButton = document.createElement('button');
+    resetButton.className = 'reset-button';
+    resetButton.id = 'reset-' + graphID;
+    resetButton.textContent = 'Reset';
+    resetButton.onclick = function () {
         resetZoom(chartsMap.get(graphID));
     };
-    chartContainer.appendChild(button);
+    chartContainer.appendChild(resetButton);
 
     // 範囲指定のための入力フィールドとボタンを作成
     var rangeContainer = document.createElement('div');
@@ -70,8 +70,31 @@ function makeGraphItems(filenames, graphID) {
     listDiv.id = 'file-list';
     chartContainer.appendChild(listDiv);
 
+    // グラフ描画ボタンの作成
+    var drawButton = document.createElement('button');
+    drawButton.className = 'draw-button';
+    drawButton.id = 'draw-' + graphID;
+    drawButton.textContent = 'Draw';
+    drawButton.onclick = function () {
+        const filepath = selectedNames[0];
+        orderDrawGraph(filenames, filepath, graphID);
+    };
+    chartContainer.appendChild(drawButton);
+
+    // グラフ削除ボタンの作成
+    var deleteButton = document.createElement('button');
+    deleteButton.className = 'delete-button';
+    deleteButton.id = 'delete-' + graphID;
+    deleteButton.textContent = 'Delete';
+    deleteButton.onclick = function () {
+        orderRemoveGraph(graphID);
+    };
+    chartContainer.appendChild(deleteButton);
+
     // メインのコンテナに追加
     document.getElementById('charts').appendChild(chartContainer);
+
+    const selectedNames = [];
 
     // 各グループごとに処理を行う
     filenames.forEach(function (filename, index) {
@@ -96,11 +119,14 @@ function makeGraphItems(filenames, graphID) {
         labelElement.innerText = personName;
 
         checkbox.addEventListener('change', function () {
+            const filepath = `json/${filename}`
             if (checkbox.checked) {
-                const filepath = `json/${filename}`
-                orderDrawGraph(filenames, filepath, graphID);
+                selectedNames.push(filepath);
             } else {
-                orderRemoveGraph(graphID);
+                const index = selectedNames.indexOf(filepath);
+                if (index > -1) {
+                    selectedNames.splice(index, 1);
+                }
             }
         });
 
