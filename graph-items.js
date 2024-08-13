@@ -91,6 +91,28 @@ function makeGraphItems(filenames, graphID) {
     };
     chartContainer.appendChild(deleteButton);
 
+    // 計算式の入力エリアを作成
+    var formulaDiv = document.createElement('div');
+    var textarea = document.createElement('textarea');
+    textarea.id = `formulaInput-${graphID}`;
+    textarea.rows = 4;
+    textarea.cols = 50;
+    textarea.placeholder = 'Enter formula (e.g., log(2 * P_i + N_i))';
+    var lineBreak = document.createElement('br');
+    formulaDiv.appendChild(textarea);
+    formulaDiv.appendChild(lineBreak);
+    chartContainer.appendChild(formulaDiv);
+
+    // 計算式の実行ボタンの作成
+    var calculateButton = document.createElement('button');
+    calculateButton.className = 'calculate-button';
+    calculateButton.id = 'calculate-' + graphID;
+    calculateButton.textContent = 'Calculate';
+    calculateButton.onclick = function () {
+        evaluateFormula(graphID);
+    };
+    chartContainer.appendChild(calculateButton);
+
     // メインのコンテナに追加
     document.getElementById('charts').appendChild(chartContainer);
 
