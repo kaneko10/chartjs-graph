@@ -91,7 +91,9 @@ function makeGraphItems(filenames, graphID) {
 
         var labelElement = document.createElement('label');
         labelElement.htmlFor = 'checkbox-file-' + graphID + index;
-        labelElement.innerText = filename;
+        // 最後の"_"以降の部分を取り出し、拡張子を除く
+        const personName = filename.split('_').slice(-1)[0].replace('.json', '');
+        labelElement.innerText = personName;
 
         checkbox.addEventListener('change', function () {
             if (checkbox.checked) {
