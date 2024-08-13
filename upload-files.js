@@ -10,5 +10,5 @@ document.getElementById("file").addEventListener("change", (ev) => {
         }
     }
 
-    makeGraphItems(filenames);
+    orderGraphItems(filenames);
 });
