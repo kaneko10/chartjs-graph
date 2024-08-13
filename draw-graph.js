@@ -159,7 +159,7 @@ function drawGraph(filepath, selectedLabels, graphID) {
                 checkbox.id = 'checkbox-legend-' + graphID + '-' + datasetIndex;
 
                 var labelElement = document.createElement('label');
-                labelElement.htmlFor = 'checkbox-label-' + graphID + '-' + datasetIndex;
+                labelElement.htmlFor = 'checkbox-legend-' + graphID + '-' + datasetIndex;
                 labelElement.innerText = label;
 
                 checkbox.addEventListener('change', function () {
