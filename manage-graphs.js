@@ -19,6 +19,10 @@ function orderRemoveGraph(graphID) {
     }
 }
 
+function orderEvaluateFormula(graphID) {
+    evaluateFormula(graphID);
+}
+
 // 一意のIDを生成する関数
 function generateUniqueId() {
     idCounter += 1;

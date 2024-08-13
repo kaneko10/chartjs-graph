@@ -255,3 +255,7 @@ function displayVariables() {
         variablesDiv.appendChild(span);
     });
 }
+
+function evaluateFormula(graphID) {
+    getCalculationResult();
+}
