@@ -80,10 +80,16 @@ function drawGraph(filepath, graphID) {
     fetch(filepath)
         .then(response => response.json())
         .then(jsonData => {
+            // 使用したいラベルを指定
+            const selectedLabels = ['Happiness', 'Sadness', 'Anger', 'Disgust', 'Fear', 'Neutral', 'Surprise'];
+
+            // ラベルで選択したデータセットのみを抽出
+            const filteredDatasets = jsonData.datasets.filter(dataset => selectedLabels.includes(dataset.label));
+
             // JSONから取得したデータをChart.jsに適用
             data = {
                 labels: jsonData.labels,
-                datasets: jsonData.datasets
+                datasets: filteredDatasets // フィルタリングされたデータセットのみ使用
             };
 
             // ダミーデータを追加（画像の変化を見やすくするため）
