@@ -8,7 +8,11 @@ function getCalculationResult(variablesMap) {
             data[key] = value[i];
         });
         const f_i = math.evaluate(formula, data);
-        results.push(f_i);
+        if (f_i === -Infinity) {
+            results.push(0);
+        } else {
+            results.push(f_i);
+        }
     }
     return results;
 }
