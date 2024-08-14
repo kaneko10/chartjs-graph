@@ -317,7 +317,15 @@ function evaluateFormula(graphID) {
     displayVariables();
 }
 
+// p_i, n_i を始点を指定して再計算
 function orderRecalculationGraph(graphID) {
-    const recalculationChart = drawRecalculation(new Map(variables), graphID);
-    chartsMap.set(graphID, recalculationChart);
+    const results = drawRecalculation(new Map(variables), graphID);
+    chartsMap.set(graphID, results.chart);
+
+    const newNames = results.names;
+    const newData = results.data;
+    for (i = 0; i < newNames.length; i++) {
+        addVariables(newNames[i], newData[i]);
+    }
+    displayVariables();
 }

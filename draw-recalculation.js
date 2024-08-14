@@ -27,6 +27,10 @@ function drawRecalculation(variablesMap, graphID) {
     const min = conditions['minRange'];
     const max = conditions['maxRange'];
 
+    const suffix = document.getElementById('recalculationName').value;
+    let newNames = [];
+    let newData = [];
+
     const rangeArray = [];
     if (isNaN(min)) {
         for (let i = 0; i < variablesMap.get(variableNames[0]).length; i++) {
@@ -42,11 +46,12 @@ function drawRecalculation(variablesMap, graphID) {
 
     variableNames.forEach(function (name) {
         const variableData = variablesMap.get(name);
+        const newName = `${name}_${suffix}`;
         let dataset;
         if (isNaN(min)) {
             dataset = {
                 data: variableData,
-                label: name,
+                label: newName,
                 "borderWidth": 2,
                 "pointRadius": 1,
             }
@@ -63,12 +68,14 @@ function drawRecalculation(variablesMap, graphID) {
             }
             dataset = {
                 data: recalculationValues,
-                label: name,
+                label: newName,
                 "borderWidth": 2,
                 "pointRadius": 1,
             }
         }
         datasets.push(dataset);
+        newNames.push(newName);
+        newData.push(dataset.data);
     });
 
     let data = {
@@ -166,6 +173,6 @@ function drawRecalculation(variablesMap, graphID) {
     });
     chart.update();
 
-    return chart;
+    return { chart: chart, names: newNames, data: newData };
     
 }
