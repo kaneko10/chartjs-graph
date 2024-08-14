@@ -116,7 +116,7 @@ function makeGraphItems(filenames, graphID) {
     calculateButton.id = 'calculate-' + graphID;
     calculateButton.textContent = 'Calculate';
     calculateButton.onclick = function () {
-        orderEvaluateFormula(graphID);
+        orderEvaluateFormula(filenames, graphID);
     };
     chartContainer.appendChild(calculateButton);
 

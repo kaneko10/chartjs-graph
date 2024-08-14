@@ -19,8 +19,11 @@ function orderRemoveGraph(graphID) {
     }
 }
 
-function orderEvaluateFormula(graphID) {
+function orderEvaluateFormula(filenames, graphID) {
     evaluateFormula(graphID);
+
+    // 新しいグラフの描画エリアの作成を依頼
+    orderGraphItems(filenames);
 }
 
 // 一意のIDを生成する関数
