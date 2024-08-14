@@ -23,7 +23,6 @@ function getRecalculationConditions() {
 
 function drawRecalculation(variablesMap, graphID) {
     const conditions = getRecalculationConditions();
-    console.log(conditions);
     const variableNames = conditions['variableName'];
     const min = conditions['minRange'];
     const max = conditions['maxRange'];
@@ -42,19 +41,28 @@ function drawRecalculation(variablesMap, graphID) {
     const datasets = [];
 
     variableNames.forEach(function (name) {
-        const value = variablesMap.get(name);
+        const variableData = variablesMap.get(name);
         let dataset;
         if (isNaN(min)) {
             dataset = {
-                data: value,
+                data: variableData,
                 label: name,
                 "borderWidth": 2,
                 "pointRadius": 1,
             }
         } else {
-            const slicedValue = value.slice(min, max + 1);
+            let recalculationValues = [];
+            // minを開始地点として再計算
+            if (min > 0) {
+                const preValue = variableData[min - 1];
+                for (let i = min; i <= max; i++) {
+                    recalculationValues.push(variableData[i] - preValue);
+                }
+            } else {
+                recalculationValues = variableData.slice(min, max + 1);
+            }
             dataset = {
-                data: slicedValue,
+                data: recalculationValues,
                 label: name,
                 "borderWidth": 2,
                 "pointRadius": 1,
@@ -95,7 +103,7 @@ function drawRecalculation(variablesMap, graphID) {
                         return value;
                     }
                 },
-                min: Math.floor(Math.min(...data.datasets[0].data)),
+                min: 0,
                 max: Math.ceil(Math.max(...data.datasets[0].data)),
             },
         },
