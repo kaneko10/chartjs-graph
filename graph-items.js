@@ -108,7 +108,6 @@ function makeGraphItems(filenames, graphID) {
     variableNameEl.id = `variable-name-${graphID}`;
     variableNameEl.placeholder = 'Enter variable name (e.g., f_i)';
     formulaDiv.appendChild(variableNameEl);
-    chartContainer.appendChild(formulaDiv);
 
     // 計算式の実行ボタンの作成
     var calculateButton = document.createElement('button');
@@ -116,9 +115,18 @@ function makeGraphItems(filenames, graphID) {
     calculateButton.id = 'calculate-' + graphID;
     calculateButton.textContent = 'Calculate';
     calculateButton.onclick = function () {
-        orderEvaluateFormula(graphID);
+        // textareaとinputの値を取得
+        var formulaValue = textarea.value.trim();
+        var variableNameValue = variableNameEl.value.trim();
+        // 両方に入力があるかをチェック
+        if (formulaValue && variableNameValue) {
+            orderEvaluateFormula(graphID);
+        } else {
+            alert('Please fill in both the formula and the variable name.'); // 必要に応じて警告メッセージを表示
+        }
     };
-    chartContainer.appendChild(calculateButton);
+    formulaDiv.appendChild(calculateButton);
+    chartContainer.appendChild(formulaDiv);
 
     // メインのコンテナに追加
     document.getElementById('charts').appendChild(chartContainer);
