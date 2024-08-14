@@ -299,9 +299,14 @@ function displayVariables() {
 function evaluateFormula(graphID) {
     const results = getCalculationResult(variables, graphID);
     const variableName = results[0];
-    const resultData = results[1]
+    const resultData = results[1];
     const resultsChart = drawResults(graphID, resultData, variableName);
     chartsMap.set(graphID, resultsChart);
     addVariables(variableName, resultData);
     displayVariables();
+}
+
+function orderRecalculationGraph(graphID) {
+    const recalculationChart = drawRecalculation(new Map(variables), graphID);
+    chartsMap.set(graphID, recalculationChart);
 }
