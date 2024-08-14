@@ -272,6 +272,7 @@ function displayVariables() {
         var span = document.createElement('span');
         span.textContent = key;
         span.style.marginRight = '10px';
+        span.style.display = 'inline-block';  // 折り返しを有効にする
         variablesDiv.appendChild(span);
     });
 
