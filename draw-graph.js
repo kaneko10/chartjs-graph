@@ -281,9 +281,10 @@ function displayVariables() {
 
 function evaluateFormula(graphID) {
     const results = getCalculationResult(variables, graphID);
-    const variableName = document.getElementById(`variable-name-${graphID}`).value;
-    const resultsChart = drawResults(graphID, results, variableName);
+    const variableName = results[0];
+    const resultData = results[1]
+    const resultsChart = drawResults(graphID, resultData, variableName);
     chartsMap.set(graphID, resultsChart);
-    addVariables(variableName, results);
+    addVariables(variableName, resultData);
     displayVariables();
 }

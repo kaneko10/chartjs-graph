@@ -1,7 +1,5 @@
 // 計算式の結果のグラフを描写
 function drawResults(graphID, results, variableName) {
-    console.log(results);
-
     var chart;
     var data;
 
