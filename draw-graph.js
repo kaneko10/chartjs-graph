@@ -201,18 +201,20 @@ function drawGraph(filename, selectedLabels, graphID) {
                 // 左矢印キーを押した場合
                 showIndex -= 1;
             }
-            var match = showBody.match(/^([\w]+):/);
-            if (match) {
-                var targetLabel = match[1];
-                var targetDataset = data.datasets.find(dataset => dataset.label === targetLabel);
-                if (targetDataset) {
-                    var targetData = targetDataset.data[showIndex];
-                    const body = targetLabel + ': ' + targetData
-                    const passFrameNum = data.labels[showIndex] - firstFrameNum;
-                    const passTime = passFrameNum / fps;
-                    faceFrame(filepath, data.labels[showIndex], body, graphID, passTime);
-                } else {
-                    console.log('Specified label not found');
+            if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+                var match = showBody.match(/^([\w]+):/);
+                if (match) {
+                    var targetLabel = match[1];
+                    var targetDataset = data.datasets.find(dataset => dataset.label === targetLabel);
+                    if (targetDataset) {
+                        var targetData = targetDataset.data[showIndex];
+                        const body = targetLabel + ': ' + targetData
+                        const passFrameNum = data.labels[showIndex] - firstFrameNum;
+                        const passTime = passFrameNum / fps;
+                        faceFrame(filepath, data.labels[showIndex], body, graphID, passTime);
+                    } else {
+                        console.log('Specified label not found');
+                    }
                 }
             }
         }
