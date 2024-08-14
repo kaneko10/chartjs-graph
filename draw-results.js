@@ -1,5 +1,7 @@
 // 計算式の結果のグラフを描写
 function drawResults(graphID, results) {
+    console.log(results);
+
     var chart;
     var data;
 
@@ -111,15 +113,6 @@ function drawResults(graphID, results) {
         ds.fill = false;
     });
     chart.update();
-
-    // 利用できる変数リストをセット
-    // const personName = filename.split('_').slice(-1)[0].replace('.json', '');
-    // filteredDatasets.forEach(dataset => {
-    //     if (dataset.label != 'dummy') {
-    //         variables.set(`${dataset.label}_${personName}`, dataset.data);
-    //     }
-    // });
-    // displayVariables()
-
+    
     return chart;
 }

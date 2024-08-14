@@ -187,7 +187,7 @@ function drawGraph(filename, selectedLabels, graphID) {
                     variables.set(`${dataset.label}_${personName}`, dataset.data);
                 }
             });
-            displayVariables()
+            displayVariables();
         })
         .catch(error => console.error('Error loading JSON data:', error));
 
@@ -247,6 +247,11 @@ function updateRange(graphID) {
 function displayVariables() {
     var variablesDiv = document.getElementById('variables');
 
+    // 子要素がある限り削除する
+    while (variablesDiv.firstChild) {
+        variablesDiv.removeChild(variablesDiv.firstChild);
+    }
+
     // 変数の値を全て表示する
     variables.forEach(function (value, key) {
         var span = document.createElement('span');
@@ -258,6 +263,8 @@ function displayVariables() {
 
 function evaluateFormula(graphID) {
     const results = getCalculationResult(variables);
-    const resultsCnart = drawResults(graphID, results);
-    chartsMap.set(graphID, resultsCnart);
+    const resultsChart = drawResults(graphID, results);
+    chartsMap.set(graphID, resultsChart);
+    variables.set(`f_i`, results);
+    displayVariables();
 }
