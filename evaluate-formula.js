@@ -7,11 +7,11 @@ function getCalculationResult(variablesMap, graphID) {
         variablesMap.forEach(function (value, key) {
             data[key] = value[i];
         });
-        const f_i = math.evaluate(formula, data);
-        if (f_i === -Infinity) {
+        const result = math.evaluate(formula, data);
+        if (result === -Infinity) {
             results.push(0);
         } else {
-            results.push(f_i);
+            results.push(result);
         }
     }
     return results;
