@@ -262,10 +262,15 @@ function addVariables(key, value) {
 function displayVariables() {
     var variablesDiv = document.getElementById('variables');
 
-    // 子要素がある限り削除する
-    while (variablesDiv.firstChild) {
-        variablesDiv.removeChild(variablesDiv.firstChild);
-    }
+    // すべてのチェックボックスを削除する
+    var checkboxes = variablesDiv.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(function (checkbox) {
+        variablesDiv.removeChild(checkbox);
+        var label = variablesDiv.querySelector(`label[for="${checkbox.id}"]`);
+        if (label) {
+            variablesDiv.removeChild(label);
+        }
+    });
 
     // 変数の値を全て表示する
     variables.forEach(function (value, key) {
