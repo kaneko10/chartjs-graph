@@ -23,27 +23,42 @@ function getRecalculationConditions() {
 
 function drawRecalculation(variablesMap, graphID) {
     const conditions = getRecalculationConditions();
+    console.log(conditions);
     const variableNames = conditions['variableName'];
     const min = conditions['minRange'];
     const max = conditions['maxRange'];
 
     const rangeArray = [];
-    // for (let i = min; i <= max; i++) {
-    //     rangeArray.push(i);
-    // }
-    for (let i = 0; i < variablesMap.get(variableNames[0]).length; i++) {
-        rangeArray.push(i);
+    if (isNaN(min)) {
+        for (let i = 0; i < variablesMap.get(variableNames[0]).length; i++) {
+            rangeArray.push(i);
+        }
+    } else {
+        for (let i = min; i <= max; i++) {
+            rangeArray.push(i);
+        }
     }
 
     const datasets = [];
 
     variableNames.forEach(function (name) {
         const value = variablesMap.get(name);
-        const dataset = {
-            data: value,
-            label: name,
-            "borderWidth": 2,
-            "pointRadius": 1,
+        let dataset;
+        if (isNaN(min)) {
+            dataset = {
+                data: value,
+                label: name,
+                "borderWidth": 2,
+                "pointRadius": 1,
+            }
+        } else {
+            const slicedValue = value.slice(min, max + 1);
+            dataset = {
+                data: slicedValue,
+                label: name,
+                "borderWidth": 2,
+                "pointRadius": 1,
+            }
         }
         datasets.push(dataset);
     });
