@@ -6,15 +6,13 @@
 </head>
 <body>
     <input id="file" type="file" name="upfile[]" webkitdirectory>
-    <div id="file-list" class="file-list"></div> <!-- 描画するグラフを選択するためのチェックボックス -->
 
     <div id="charts"></div>
-    <!-- <div class="chart">
-        <canvas id="myChart"></canvas>
-        <button onclick="resetZoom(myChart);">Reset</button>
-        <div id="legend" class="legend"></div>
-        <div id="face-frame" class="tooltip"></div>
-    </div> -->
+
+    <!-- 利用可能な変数名を表示 -->
+    <div id="variables">
+        <p>利用可能な変数リスト</p>
+    </div>
 </body>
 
 <!--最新-->
@@ -26,8 +24,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.2.1/dist/chartjs-plugin-zoom.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+<script src="./upload-files.js"></script>
+<script src="./manage-graphs.js"></script>
+<script src="./graph-items.js"></script>
 <script src="./draw-graph.js"></script>
+<script src="./evaluate-formula.js"></script>
+<script src="./draw-results.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/moment-mini@2.24.0/moment.min.js"></script>
-<script src="./file-list.js"></script>
 <script src="./face-frame.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.0.0/math.min.js"></script>
 </html>

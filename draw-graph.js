@@ -1,6 +1,7 @@
 var chartsMap = new Map();
+var variables = new Map();
 
-function drawGraph(filepath, graphID) {
+function drawGraph(filename, selectedLabels, graphID) {
     var chart;
     var data;
     var showIndex;
@@ -8,83 +9,16 @@ function drawGraph(filepath, graphID) {
     const fps = 30;
     var firstFrameNum;
 
-    // 新しいチャートセットの作成
-    var chartContainer = document.createElement('div');
-    chartContainer.className = 'chart-div';
-    chartContainer.id = 'chart-div-' + graphID;
-
-    // ツールチップ用のdiv
-    var tooltipDiv = document.createElement('div');
-    tooltipDiv.id = 'face-frame-' + graphID;
-    tooltipDiv.className = 'tooltip';
-    chartContainer.appendChild(tooltipDiv);
-
-    // Canvasのcontainerの作成
-    var canvasContainer = document.createElement('div');
-    canvasContainer.className = 'canvas-container';
-    canvasContainer.id = 'canvas-container-' + graphID;
-    canvasContainer.style.position = "relative";
-    canvasContainer.style.float = "right";
-    canvasContainer.style.width = "80%";
-    canvasContainer.style.height = "90%";
-
-    // Canvasを作成
-    var canvas = document.createElement('canvas');
-    canvas.className = 'canvas';
-    canvas.id = 'chart-' + graphID;
-    canvasContainer.appendChild(canvas);
-    chartContainer.appendChild(canvasContainer);
-
-    // 凡例用のチェックボックス
-    var legendDiv = document.createElement('div');
-    legendDiv.id = 'legend-' + graphID;
-    legendDiv.className = 'legend';
-    chartContainer.appendChild(legendDiv);
-
-    // リセットボタンの作成
-    var button = document.createElement('button');
-    button.className = 'reset-button';
-    button.id = 'reset-' + graphID;
-    button.textContent = 'Reset';
-    button.onclick = function () {
-        resetZoom(chartsMap.get(graphID));
-    };
-    chartContainer.appendChild(button);
-
-    // 範囲指定のための入力フィールドとボタンを作成
-    var rangeContainer = document.createElement('div');
-    rangeContainer.id = 'rangeDiv-' + graphID;
-    var minInput = document.createElement('input');
-    minInput.type = 'number';
-    minInput.id = `min-range-${graphID}`;
-    minInput.placeholder = 'Min range';
-    rangeContainer.appendChild(minInput);
-    var maxInput = document.createElement('input');
-    maxInput.type = 'number';
-    maxInput.id = `max-range-${graphID}`;
-    maxInput.placeholder = 'Max range';
-    rangeContainer.appendChild(maxInput);
-    var updateButton = document.createElement('button');
-    updateButton.textContent = 'Update Range';
-    updateButton.id = `updateButton-${graphID}`;
-    updateButton.onclick = function () {
-        updateRange(graphID);
-    };
-    rangeContainer.appendChild(updateButton);
-    chartContainer.appendChild(rangeContainer);
-
-    // メインのコンテナに追加
-    document.getElementById('charts').appendChild(chartContainer);
-
     // JSONファイルからデータを取得する
+    const filepath = `json/${filename}`;
     fetch(filepath)
         .then(response => response.json())
         .then(jsonData => {
-            // 使用したいラベルを指定
-            const selectedLabels = ['Happiness', 'Sadness', 'Anger', 'Disgust', 'Fear', 'Neutral', 'Surprise'];
-
             // ラベルで選択したデータセットのみを抽出
             const filteredDatasets = jsonData.datasets.filter(dataset => selectedLabels.includes(dataset.label));
+
+            // 感情ラベルのデータセットのみを抽出
+            const emotionDatasets = jsonData.datasets.filter(dataset => ['Emotion', 'Emotion_ind'].includes(dataset.label));
 
             // JSONから取得したデータをChart.jsに適用
             data = {
@@ -230,7 +164,7 @@ function drawGraph(filepath, graphID) {
                 checkbox.id = 'checkbox-legend-' + graphID + '-' + datasetIndex;
 
                 var labelElement = document.createElement('label');
-                labelElement.htmlFor = 'checkbox-label-' + graphID + '-' + datasetIndex;
+                labelElement.htmlFor = 'checkbox-legend-' + graphID + '-' + datasetIndex;
                 labelElement.innerText = label;
 
                 checkbox.addEventListener('change', function () {
@@ -248,6 +182,18 @@ function drawGraph(filepath, graphID) {
                 ds.fill = false;
             });
             chart.update();
+
+            // 利用できる変数リストをセット
+            const personName = filename.split('_').slice(-1)[0].replace('.json', '');
+            filteredDatasets.forEach(dataset => {
+                if (dataset.label != 'dummy') {
+                    addVariables(`${dataset.label}_${personName}`, dataset.data);
+                }
+            });
+            emotionDatasets.forEach(dataset => {
+                addVariables(`${dataset.label}_${personName}`, dataset.data);
+            });
+            displayVariables();
         })
         .catch(error => console.error('Error loading JSON data:', error));
 
@@ -261,18 +207,20 @@ function drawGraph(filepath, graphID) {
                 // 左矢印キーを押した場合
                 showIndex -= 1;
             }
-            var match = showBody.match(/^([\w]+):/);
-            if (match) {
-                var targetLabel = match[1];
-                var targetDataset = data.datasets.find(dataset => dataset.label === targetLabel);
-                if (targetDataset) {
-                    var targetData = targetDataset.data[showIndex];
-                    const body = targetLabel + ': ' + targetData
-                    const passFrameNum = data.labels[showIndex] - firstFrameNum;
-                    const passTime = passFrameNum / fps;
-                    faceFrame(filepath, data.labels[showIndex], body, graphID, passTime);
-                } else {
-                    console.log('Specified label not found');
+            if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+                var match = showBody.match(/^([\w]+):/);
+                if (match) {
+                    var targetLabel = match[1];
+                    var targetDataset = data.datasets.find(dataset => dataset.label === targetLabel);
+                    if (targetDataset) {
+                        var targetData = targetDataset.data[showIndex];
+                        const body = targetLabel + ': ' + targetData
+                        const passFrameNum = data.labels[showIndex] - firstFrameNum;
+                        const passTime = passFrameNum / fps;
+                        faceFrame(filepath, data.labels[showIndex], body, graphID, passTime);
+                    } else {
+                        console.log('Specified label not found');
+                    }
                 }
             }
         }
@@ -301,4 +249,42 @@ function updateRange(graphID) {
     chart.options.scales.x.min = minRange ? parseFloat(minRange) : undefined;
     chart.options.scales.x.max = maxRange ? parseFloat(maxRange) : undefined;
     chart.update();
+}
+
+// 利用可能変数リストに追加
+function addVariables(key, value) {
+    if (!variables.has(key)) {
+        variables.set(key, value);
+    }
+}
+
+// 利用可能な変数リストを表示
+function displayVariables() {
+    var variablesDiv = document.getElementById('variables');
+
+    // 子要素がある限り削除する
+    while (variablesDiv.firstChild) {
+        variablesDiv.removeChild(variablesDiv.firstChild);
+    }
+
+    // 変数の値を全て表示する
+    variables.forEach(function (value, key) {
+        var span = document.createElement('span');
+        span.textContent = key;
+        span.style.marginRight = '10px';
+        span.style.display = 'inline-block';  // 折り返しを有効にする
+        variablesDiv.appendChild(span);
+    });
+
+    console.log(variables);
+}
+
+function evaluateFormula(graphID) {
+    const results = getCalculationResult(variables, graphID);
+    const variableName = results[0];
+    const resultData = results[1]
+    const resultsChart = drawResults(graphID, resultData, variableName);
+    chartsMap.set(graphID, resultsChart);
+    addVariables(variableName, resultData);
+    displayVariables();
 }
