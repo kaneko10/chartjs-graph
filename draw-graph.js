@@ -258,5 +258,6 @@ function displayVariables() {
 
 function evaluateFormula(graphID) {
     const results = getCalculationResult(variables);
-    console.log(results);
+    const resultsCnart = drawResults(graphID, results);
+    chartsMap.set(graphID, resultsCnart);
 }
