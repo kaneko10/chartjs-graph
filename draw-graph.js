@@ -17,6 +17,9 @@ function drawGraph(filename, selectedLabels, graphID) {
             // ラベルで選択したデータセットのみを抽出
             const filteredDatasets = jsonData.datasets.filter(dataset => selectedLabels.includes(dataset.label));
 
+            // 感情ラベルのデータセットのみを抽出
+            const emotionDatasets = jsonData.datasets.filter(dataset => ['Emotion', 'Emotion_ind'].includes(dataset.label));
+
             // JSONから取得したデータをChart.jsに適用
             data = {
                 labels: jsonData.labels,
@@ -184,8 +187,11 @@ function drawGraph(filename, selectedLabels, graphID) {
             const personName = filename.split('_').slice(-1)[0].replace('.json', '');
             filteredDatasets.forEach(dataset => {
                 if (dataset.label != 'dummy') {
-                    variables.set(`${dataset.label}_${personName}`, dataset.data);
+                    addVariables(`${dataset.label}_${personName}`, dataset.data);
                 }
+            });
+            emotionDatasets.forEach(dataset => {
+                addVariables(`${dataset.label}_${personName}`, dataset.data);
             });
             displayVariables();
         })
@@ -245,6 +251,13 @@ function updateRange(graphID) {
     chart.update();
 }
 
+// 利用可能変数リストに追加
+function addVariables(key, value) {
+    if (!variables.has(key)) {
+        variables.set(key, value);
+    }
+}
+
 // 利用可能な変数リストを表示
 function displayVariables() {
     var variablesDiv = document.getElementById('variables');
@@ -261,6 +274,8 @@ function displayVariables() {
         span.style.marginRight = '10px';
         variablesDiv.appendChild(span);
     });
+
+    console.log(variables);
 }
 
 function evaluateFormula(graphID) {
@@ -268,6 +283,6 @@ function evaluateFormula(graphID) {
     const variableName = document.getElementById(`variable-name-${graphID}`).value;
     const resultsChart = drawResults(graphID, results, variableName);
     chartsMap.set(graphID, resultsChart);
-    variables.set(variableName, results);
+    addVariables(variableName, results);
     displayVariables();
 }
