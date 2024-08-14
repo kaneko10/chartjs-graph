@@ -1,5 +1,5 @@
-function getCalculationResult(variablesMap) {
-    const formula = 'log(2 * P_i_Morita + N_i_Morita)';
+function getCalculationResult(variablesMap, graphID) {
+    const formula = document.getElementById(`formulaInput-${graphID}`).value;
     let results = [];
     const minLength = getMinLength(variablesMap)
     for (var i = 0; i < minLength; i++) {
