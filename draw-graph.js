@@ -265,8 +265,9 @@ function displayVariables() {
 
 function evaluateFormula(graphID) {
     const results = getCalculationResult(variables, graphID);
-    const resultsChart = drawResults(graphID, results);
+    const variableName = document.getElementById(`variable-name-${graphID}`).value;
+    const resultsChart = drawResults(graphID, results, variableName);
     chartsMap.set(graphID, resultsChart);
-    variables.set(`f_i`, results);
+    variables.set(variableName, results);
     displayVariables();
 }

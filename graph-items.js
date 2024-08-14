@@ -101,6 +101,13 @@ function makeGraphItems(filenames, graphID) {
     var lineBreak = document.createElement('br');
     formulaDiv.appendChild(textarea);
     formulaDiv.appendChild(lineBreak);
+
+    // 新しい変数名の入力エリアを作成
+    var variableNameEl = document.createElement('input');
+    variableNameEl.type = 'text';
+    variableNameEl.id = `variable-name-${graphID}`;
+    variableNameEl.placeholder = 'Enter variable name (e.g., f_i)';
+    formulaDiv.appendChild(variableNameEl);
     chartContainer.appendChild(formulaDiv);
 
     // 計算式の実行ボタンの作成

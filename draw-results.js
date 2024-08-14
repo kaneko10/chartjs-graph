@@ -1,5 +1,5 @@
 // 計算式の結果のグラフを描写
-function drawResults(graphID, results) {
+function drawResults(graphID, results, variableName) {
     console.log(results);
 
     var chart;
@@ -11,7 +11,7 @@ function drawResults(graphID, results) {
         labels: labels,
         datasets: [{
             data: results,
-            label: 'f_i',
+            label: variableName,
             "borderWidth": 2,
             "pointRadius": 1,
         }]
@@ -40,7 +40,7 @@ function drawResults(graphID, results) {
                 display: true,
                 title: {
                     display: true,
-                    text: 'f_i',
+                    text: variableName,
                     color: 'black', // ラベルの色
                     font: {
                         size: 14 // ラベルのフォントサイズ
@@ -58,7 +58,7 @@ function drawResults(graphID, results) {
         plugins: {
             title: {
                 display: true,
-                text: 'f_i',
+                text: variableName,
             },
             tooltip: {
                 enabled: true,
@@ -113,6 +113,6 @@ function drawResults(graphID, results) {
         ds.fill = false;
     });
     chart.update();
-    
+
     return chart;
 }
