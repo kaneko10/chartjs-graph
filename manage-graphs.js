@@ -1,10 +1,12 @@
 var idList = [];
+var filenamesList;
 
 // 一意のIDを生成するカウンター
 let idCounter = 0;
 
 function orderGraphItems(filenames) {
     const graphID = addIdToList();
+    filenamesList = filenames;
     makeGraphItems(filenames, graphID);
 }
 
@@ -19,11 +21,12 @@ function orderRemoveGraph(graphID) {
     }
 }
 
-function orderEvaluateFormula(filenames, graphID) {
+function orderEvaluateFormula(graphID) {
     evaluateFormula(graphID);
 
-    // 新しいグラフの描画エリアの作成を依頼
-    orderGraphItems(filenames);
+    // 新しいグラフの描画エリアを作成
+    const nextGraphID = addIdToList();
+    makeGraphItems(filenamesList, nextGraphID);
 }
 
 // 一意のIDを生成する関数
