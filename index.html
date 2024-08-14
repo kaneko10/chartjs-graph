@@ -13,6 +13,12 @@
     <div id="variables">
         <p>利用可能な変数リスト</p>
     </div>
+    <div id="recalculation-div">
+        <input type="number" id="min-range-recalculation" placeholder="Min range">
+        <input type="number" id="max-range-recalculation" placeholder="Max range">
+        <input type="text" id="recalculationName" placeholder="Enter suffix (ex. Q1)">
+        <button id="recalculationButton" class="recalculationButton" onclick="orderRecalculation()">Recalculation</button>
+    </div>
 </body>
 
 <!--最新-->
@@ -30,6 +36,7 @@
 <script src="./draw-graph.js"></script>
 <script src="./evaluate-formula.js"></script>
 <script src="./draw-results.js"></script>
+<script src="./draw-recalculation.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/moment-mini@2.24.0/moment.min.js"></script>
 <script src="./face-frame.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.0.0/math.min.js"></script>

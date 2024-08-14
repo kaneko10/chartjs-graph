@@ -1,5 +1,6 @@
 var chartsMap = new Map();
 var variables = new Map();
+var startFramesMap = new Map(); // 各グラフのjsonデータ上の最初のフレーム番号を管理（全てのグラフを0始まりにするため）
 
 function drawGraph(filename, selectedLabels, graphID) {
     var chart;
@@ -7,6 +8,7 @@ function drawGraph(filename, selectedLabels, graphID) {
     var showIndex;
     var showBody;
     const fps = 30;
+    const frame_interval = 2;   // フレーム番号間隔
     var firstFrameNum;
 
     // JSONファイルからデータを取得する
@@ -21,8 +23,15 @@ function drawGraph(filename, selectedLabels, graphID) {
             const emotionDatasets = jsonData.datasets.filter(dataset => ['Emotion', 'Emotion_ind'].includes(dataset.label));
 
             // JSONから取得したデータをChart.jsに適用
+            const startFrame = jsonData.labels[0];
+            startFramesMap.set(graphID, startFrame);
+            const rangeArray = [];
+            for (let i = 0; i < jsonData.labels.length; i++) {
+                rangeArray.push(i);
+            }
+
             data = {
-                labels: jsonData.labels,
+                labels: rangeArray,
                 datasets: filteredDatasets // フィルタリングされたデータセットのみ使用
             };
 
@@ -56,7 +65,7 @@ function drawGraph(filename, selectedLabels, graphID) {
                             maxRotation: 90,
                             minRotation: 90,
                             callback: function (value, index, ticks) {
-                                return `${jsonData.annotations[value]} - ${jsonData.labels[value]}`;
+                                return `${jsonData.annotations[value]} - ${rangeArray[value]}`;
                             }
                         }
                     },
@@ -93,10 +102,11 @@ function drawGraph(filename, selectedLabels, graphID) {
                                 bodyLines.forEach(function (body, i) {
                                     // x軸の値を取得
                                     showIndex = tooltipModel.dataPoints[0].dataIndex;
-                                    var xValue = context.chart.data.labels[showIndex];
+                                    const xValue = context.chart.data.labels[showIndex];
+                                    const frameNum = xValue * frame_interval + + startFramesMap.get(graphID);   // グラフの開始を0にしているため
                                     const passFrameNum = data.labels[showIndex] - firstFrameNum;
                                     const passTime = passFrameNum / fps;
-                                    faceFrame(filepath, xValue, body[0], graphID, passTime);   // body[0]（凡例：x軸の値）
+                                    faceFrame(filepath, xValue, frameNum, body[0], graphID, passTime);   // body[0]（凡例：x軸の値）
                                     showBody = body[0]
                                 });
                             }
@@ -233,6 +243,7 @@ function removeGraph(graphID) {
     if (parent && child && parent.contains(child)) {
         parent.removeChild(child);
         chartsMap.delete(graphID);
+        startFramesMap.delete(graphID);
     }
 }
 
@@ -262,18 +273,35 @@ function addVariables(key, value) {
 function displayVariables() {
     var variablesDiv = document.getElementById('variables');
 
-    // 子要素がある限り削除する
-    while (variablesDiv.firstChild) {
-        variablesDiv.removeChild(variablesDiv.firstChild);
-    }
+    // すべてのチェックボックスを削除する
+    var checkboxes = variablesDiv.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(function (checkbox) {
+        variablesDiv.removeChild(checkbox);
+        var label = variablesDiv.querySelector(`label[for="${checkbox.id}"]`);
+        if (label) {
+            variablesDiv.removeChild(label);
+        }
+    });
 
     // 変数の値を全て表示する
     variables.forEach(function (value, key) {
-        var span = document.createElement('span');
-        span.textContent = key;
-        span.style.marginRight = '10px';
-        span.style.display = 'inline-block';  // 折り返しを有効にする
-        variablesDiv.appendChild(span);
+        // チェックボックスを作成
+        var checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = `checkbox-variables-${key}`;
+        checkbox.name = key;
+        checkbox.value = key;
+        checkbox.style.marginRight = '5px';
+
+        // ラベルを作成
+        var label = document.createElement('label');
+        label.htmlFor = `checkbox-variables-${key}`;
+        label.textContent = key;
+        label.style.marginRight = '12px';  // チェックボックスと次の要素の間に余白を追加
+
+        // チェックボックスとラベルをDOMに追加
+        variablesDiv.appendChild(checkbox);
+        variablesDiv.appendChild(label);
     });
 
     console.log(variables);
@@ -282,9 +310,22 @@ function displayVariables() {
 function evaluateFormula(graphID) {
     const results = getCalculationResult(variables, graphID);
     const variableName = results[0];
-    const resultData = results[1]
+    const resultData = results[1];
     const resultsChart = drawResults(graphID, resultData, variableName);
     chartsMap.set(graphID, resultsChart);
     addVariables(variableName, resultData);
+    displayVariables();
+}
+
+// p_i, n_i を始点を指定して再計算
+function orderRecalculationGraph(graphID) {
+    const results = drawRecalculation(new Map(variables), graphID);
+    chartsMap.set(graphID, results.chart);
+
+    const newNames = results.names;
+    const newData = results.data;
+    for (i = 0; i < newNames.length; i++) {
+        addVariables(newNames[i], newData[i]);
+    }
     displayVariables();
 }

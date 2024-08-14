@@ -1,4 +1,4 @@
-function faceFrame(jsonFilePath, frameNum, value, graphID, time) {
+function faceFrame(jsonFilePath, xValue, frameNum, value, graphID, time) {
     var tooltipEl = document.getElementById('face-frame-' + graphID);
     var baseDiv = document.getElementById('canvas-container-' + graphID);
     var baseRect = baseDiv.getBoundingClientRect();
@@ -27,10 +27,11 @@ function faceFrame(jsonFilePath, frameNum, value, graphID, time) {
     }
     const imagePath = `${imageDirPath}/${imageName}`;
 
+    innerHtml += '<p>x: ' + xValue + '</p>';
     innerHtml += '<p>time: ' + time.toFixed(3) + '</p>';
     innerHtml += '<p>frame: ' + frameNum + '</p>';
     innerHtml += '<p>' + value + '</p>';
-    innerHtml += '<br><img src="' + imagePath + '" width="200" height="200">';
+    innerHtml += '<br><img src="' + imagePath + '" width="180" height="180">';
  
     tooltipEl.innerHTML = innerHtml;
 

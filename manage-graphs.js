@@ -29,6 +29,15 @@ function orderEvaluateFormula(graphID) {
     makeGraphItems(filenamesList, nextGraphID);
 }
 
+function orderRecalculation() {
+    const newestGraphID = idList[idList.length - 1];
+    orderRecalculationGraph(newestGraphID);
+
+    // 新しいグラフの描画エリアを作成
+    const nextGraphID = addIdToList();
+    makeGraphItems(filenamesList, nextGraphID);
+}
+
 // 一意のIDを生成する関数
 function generateUniqueId() {
     idCounter += 1;
