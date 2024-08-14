@@ -1,5 +1,6 @@
 var chartsMap = new Map();
 var variables = new Map();
+var startFramesMap = new Map(); // 各グラフのjsonデータ上の最初のフレーム番号を管理（全てのグラフを0始まりにするため）
 
 function drawGraph(filename, selectedLabels, graphID) {
     var chart;
@@ -7,6 +8,7 @@ function drawGraph(filename, selectedLabels, graphID) {
     var showIndex;
     var showBody;
     const fps = 30;
+    const frame_interval = 2;   // フレーム番号間隔
     var firstFrameNum;
 
     // JSONファイルからデータを取得する
@@ -21,8 +23,15 @@ function drawGraph(filename, selectedLabels, graphID) {
             const emotionDatasets = jsonData.datasets.filter(dataset => ['Emotion', 'Emotion_ind'].includes(dataset.label));
 
             // JSONから取得したデータをChart.jsに適用
+            const startFrame = jsonData.labels[0];
+            startFramesMap.set(graphID, startFrame);
+            const rangeArray = [];
+            for (let i = 0; i < jsonData.labels.length; i++) {
+                rangeArray.push(i);
+            }
+
             data = {
-                labels: jsonData.labels,
+                labels: rangeArray,
                 datasets: filteredDatasets // フィルタリングされたデータセットのみ使用
             };
 
@@ -56,7 +65,7 @@ function drawGraph(filename, selectedLabels, graphID) {
                             maxRotation: 90,
                             minRotation: 90,
                             callback: function (value, index, ticks) {
-                                return `${jsonData.annotations[value]} - ${jsonData.labels[value]}`;
+                                return `${jsonData.annotations[value]} - ${rangeArray[value]}`;
                             }
                         }
                     },
@@ -93,10 +102,11 @@ function drawGraph(filename, selectedLabels, graphID) {
                                 bodyLines.forEach(function (body, i) {
                                     // x軸の値を取得
                                     showIndex = tooltipModel.dataPoints[0].dataIndex;
-                                    var xValue = context.chart.data.labels[showIndex];
+                                    const xValue = context.chart.data.labels[showIndex];
+                                    const frameNum = xValue * frame_interval + + startFramesMap.get(graphID);   // グラフの開始を0にしているため
                                     const passFrameNum = data.labels[showIndex] - firstFrameNum;
                                     const passTime = passFrameNum / fps;
-                                    faceFrame(filepath, xValue, body[0], graphID, passTime);   // body[0]（凡例：x軸の値）
+                                    faceFrame(filepath, xValue, frameNum, body[0], graphID, passTime);   // body[0]（凡例：x軸の値）
                                     showBody = body[0]
                                 });
                             }
@@ -233,6 +243,7 @@ function removeGraph(graphID) {
     if (parent && child && parent.contains(child)) {
         parent.removeChild(child);
         chartsMap.delete(graphID);
+        startFramesMap.delete(graphID);
     }
 }
 
