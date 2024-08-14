@@ -269,11 +269,23 @@ function displayVariables() {
 
     // 変数の値を全て表示する
     variables.forEach(function (value, key) {
-        var span = document.createElement('span');
-        span.textContent = key;
-        span.style.marginRight = '10px';
-        span.style.display = 'inline-block';  // 折り返しを有効にする
-        variablesDiv.appendChild(span);
+        // チェックボックスを作成
+        var checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = `checkbox-variables-${key}`;
+        checkbox.name = key;
+        checkbox.value = key;
+        checkbox.style.marginRight = '5px';
+
+        // ラベルを作成
+        var label = document.createElement('label');
+        label.htmlFor = `checkbox-variables-${key}`;
+        label.textContent = key;
+        label.style.marginRight = '12px';  // チェックボックスと次の要素の間に余白を追加
+
+        // チェックボックスとラベルをDOMに追加
+        variablesDiv.appendChild(checkbox);
+        variablesDiv.appendChild(label);
     });
 
     console.log(variables);
