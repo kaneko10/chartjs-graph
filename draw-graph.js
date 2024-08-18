@@ -2,7 +2,7 @@ var chartsMap = new Map();
 var variables = new Map();
 var startFramesMap = new Map(); // 各グラフのjsonデータ上の最初のフレーム番号を管理（全てのグラフを0始まりにするため）
 
-function drawGraph(filename, selectedLabels, graphID) {
+function drawGraph(filename, selectedLabels, graphID, directoryName) {
     var chart;
     var data;
     var showIndex;
@@ -12,7 +12,7 @@ function drawGraph(filename, selectedLabels, graphID) {
     var firstFrameNum;
 
     // JSONファイルからデータを取得する
-    const filepath = `json/${filename}`;
+    const filepath = `json/${directoryName}/${filename}`;
     fetch(filepath)
         .then(response => response.json())
         .then(jsonData => {

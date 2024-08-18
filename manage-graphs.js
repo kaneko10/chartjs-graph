@@ -1,18 +1,23 @@
 var idList = [];
 var filenamesList;
+let directoryName = "";
 
 // 一意のIDを生成するカウンター
 let idCounter = 0;
 
-function orderGraphItems(filenames) {
+function orderGraphItems(filenames, dirName) {
     const graphID = addIdToList();
     filenamesList = filenames;
+    if (!directoryName) {
+        directoryName = dirName;
+        console.log(directoryName);
+    }
     makeGraphItems(filenames, graphID);
 }
 
 function orderDrawGraph(filenames, filename, selectedLabels, graphID) {
-    drawGraph(filename, selectedLabels, graphID);
-    orderGraphItems(filenames);
+    drawGraph(filename, selectedLabels, graphID, directoryName);
+    orderGraphItems(filenames, directoryName);
 }
 
 function orderRemoveGraph(graphID) {
