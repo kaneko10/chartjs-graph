@@ -165,7 +165,7 @@ function makeGraphItems(filenames, graphID) {
         listDiv.appendChild(checkboxDiv);
     });
 
-    const dataList = ['P_i', 'N_i', 'F_i', 'Surprise', 'Fear', 'Disgust', 'Happiness', 'Sadness', 'Anger', 'Neutral']
+    const dataList = ['P_i', 'N_i', 'F_i', 'ri_soft', 'Surprise', 'Fear', 'Disgust', 'Happiness', 'Sadness', 'Anger', 'Neutral']
     const selectedData = [];
     dataList.forEach(function (data, index) {
         // チェックボックス用のdiv
