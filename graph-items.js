@@ -76,8 +76,7 @@ function makeGraphItems(filenames, graphID) {
     drawButton.id = 'draw-' + graphID;
     drawButton.textContent = 'Draw';
     drawButton.onclick = function () {
-        const filename = selectedNames[0];
-        orderDrawGraph(filenames, filename, selectedData, graphID);
+        orderDrawGraph(filenames, selectedNames, selectedData, graphID);
     };
     chartContainer.appendChild(drawButton);
 

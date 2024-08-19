@@ -15,9 +15,12 @@ function orderGraphItems(filenames, dirName) {
     makeGraphItems(filenames, graphID);
 }
 
-function orderDrawGraph(filenames, filename, selectedLabels, graphID) {
-    drawGraph(filename, selectedLabels, graphID, directoryName);
-    orderGraphItems(filenames, directoryName);
+function orderDrawGraph(filenames, selectedFilenames, selectedLabels, graphID) {
+    selectedFilenames.forEach(filename => {
+        const newestGraphID = idList[idList.length - 1];
+        drawGraph(filename, selectedLabels, newestGraphID, directoryName);
+        orderGraphItems(filenames, directoryName);
+    });
 }
 
 function orderRemoveGraph(graphID) {
