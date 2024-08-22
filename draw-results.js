@@ -12,6 +12,8 @@ function drawResults(graphID, results, variableName) {
             label: variableName,
             "borderWidth": 2,
             "pointRadius": 1,
+            borderColor: 'rgba(218, 165, 32, 0.4)', // ゴールデンロッド
+            backgroundColor: 'rgba(218, 165, 32, 0.2)', // ゴールデンロッド
         }]
     };
 

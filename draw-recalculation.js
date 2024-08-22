@@ -43,8 +43,20 @@ function drawRecalculation(variablesMap, graphID) {
     }
 
     const datasets = [];
+    const colorList = [
+        'rgba(255, 99, 71, 0.4)', // トマト
+        'rgba(30, 144, 255, 0.4)', // ドッジブルー
+        'rgba(34, 139, 34, 0.4)',// フォレストグリーン
+        'rgba(255, 215, 0, 0.4)', // ゴールド
+        'rgba(255, 105, 180, 0.4)', // ホットピンク
+        'rgba(106, 90, 205, 0.4)', // スレートブルー
+        'rgba(255, 69, 0, 0.4)', // オレンジレッド
+        'rgba(75, 0, 130, 0.4)', // インディゴ
+        'rgba(72, 209, 204, 0.4)', // ミディアムターコイズ
+        'rgba(218, 165, 32, 0.4)', // ゴールデンロッド
+    ]
 
-    variableNames.forEach(function (name) {
+    variableNames.forEach(function (name, index) {
         const variableData = variablesMap.get(name);
         let newName;
         let dataset;
@@ -53,6 +65,8 @@ function drawRecalculation(variablesMap, graphID) {
             dataset = {
                 data: variableData,
                 label: newName,
+                borderColor: colorList[index],
+                backgroundColor: colorList[index],
                 "borderWidth": 2,
                 "pointRadius": 1,
             }
@@ -71,6 +85,8 @@ function drawRecalculation(variablesMap, graphID) {
             dataset = {
                 data: recalculationValues,
                 label: newName,
+                borderColor: colorList[index],
+                backgroundColor: colorList[index],
                 "borderWidth": 2,
                 "pointRadius": 1,
             }
