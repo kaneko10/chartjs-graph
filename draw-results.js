@@ -46,7 +46,7 @@ function drawResults(graphID, results, variableName) {
                 },
                 ticks: {
                     callback: function (value, index, ticks) {
-                        return value;
+                        return value.toFixed(2);  // 小数点以下2桁で表示
                     }
                 },
                 min: Math.floor(Math.min(...data.datasets[0].data)),
