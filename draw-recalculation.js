@@ -112,7 +112,7 @@ function drawRecalculation(variablesMap, graphID) {
                         return value.toFixed(2);  // 小数点以下2桁で表示
                     }
                 },
-                min: 0,
+                min: Math.floor(Math.min(...data.datasets[0].data)),
                 max: Math.ceil(Math.max(...data.datasets[0].data)),
             },
         },
