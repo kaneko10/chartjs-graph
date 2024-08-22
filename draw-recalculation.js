@@ -46,9 +46,10 @@ function drawRecalculation(variablesMap, graphID) {
 
     variableNames.forEach(function (name) {
         const variableData = variablesMap.get(name);
-        const newName = `${name}_${suffix}`;
+        let newName;
         let dataset;
         if (isNaN(min)) {
+            newName = name;
             dataset = {
                 data: variableData,
                 label: newName,
@@ -56,6 +57,7 @@ function drawRecalculation(variablesMap, graphID) {
                 "pointRadius": 1,
             }
         } else {
+            newName = `${name}_${suffix}`;
             let recalculationValues = [];
             // minを開始地点として再計算
             if (min > 0) {
