@@ -1,6 +1,7 @@
 import json
 import glob
 import os
+import re
 import pandas as pd
 
 def extract_name(file_name):
@@ -24,43 +25,50 @@ def check_range(value, data):
 # json_files = glob.glob(os.path.join('json/', '*.json'))
 # json_files = [os.path.basename(file) for file in json_files]
 
-file_name = 'logit_seq_OpenCV_rec_expt1_XXX.json'
-json_file_path = f'json/{file_name}'
-name = extract_name(file_name)
+# 正規表現パターン
+pattern = r".*_(expt\d+)_(\w+)\.json"
 
-# CSVファイルの読み込み
-csv_file_path = f'./annotations/annotation_{name}.csv'
-df = pd.read_csv(csv_file_path)
+json_files = glob.glob(os.path.join('json', '*.json'))
+json_files = [os.path.basename(file) for file in json_files]
+for filename in json_files:
+    print(filename)
+    match = re.search(pattern, filename)
+    if match:
+        experiment_type = match.group(1)  # expt1, expt2 など
+        name = match.group(2)
+        print(experiment_type)
+        print(name)
 
-try:
-    # JSONファイルを読み込む
-    with open(json_file_path, 'r') as file:
-        data = json.load(file)
+        json_file_path = f'json/{filename}'
+        # name = extract_name(file_name)
 
-    annotaion_data = []
+        # CSVファイルの読み込み
+        csv_file_path = f'./annotations/annotation_{name}.csv'
+        df = pd.read_csv(csv_file_path)
 
-    filtered_data = None
-    if 'expt1' in file_name:
-        print('expt1')
-        filtered_data = df[df['type'] == 'expt1']
-    elif 'expt2' in file_name:
-        print('expt2')
-        filtered_data = df[df['type'] == 'expt2']
+        try:
+            # JSONファイルを読み込む
+            with open(json_file_path, 'r') as file:
+                data = json.load(file)
 
-    for label in data['labels']:
-        # 判定する数値を指定
-        value_to_check = label
-        action = check_range(value_to_check, filtered_data)
-        annotaion_data.append(action)
-    
-    data['annotations'] = annotaion_data
+            annotaion_data = []
 
-    with open(json_file_path, 'w') as file:
-        json.dump(data, file, indent=4)
-    print("New item added to JSON file.")
-except FileNotFoundError:
-    print(f"Error: The file {json_file_path} was not found.")
-except json.JSONDecodeError:
-    print(f"Error: The file {json_file_path} is not valid JSON.")
-except Exception as e:
-    print(f"An unexpected error occurred: {e}")
+            filtered_data = df[df['type'] == experiment_type]
+
+            for label in data['labels']:
+                # 判定する数値を指定
+                value_to_check = label
+                action = check_range(value_to_check, filtered_data)
+                annotaion_data.append(action)
+            
+            data['annotations'] = annotaion_data
+
+            with open(json_file_path, 'w') as file:
+                json.dump(data, file, indent=4)
+            print("New item added to JSON file.")
+        except FileNotFoundError:
+            print(f"Error: The file {json_file_path} was not found.")
+        except json.JSONDecodeError:
+            print(f"Error: The file {json_file_path} is not valid JSON.")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
