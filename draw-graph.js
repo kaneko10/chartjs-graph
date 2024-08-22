@@ -333,3 +333,11 @@ function orderRecalculationGraph(graphID) {
 function orderSaveVariablesToCSV() {
     saveVariablesToCSV(new Map(variables));
 }
+
+function orderLoadVariables(csvData) {
+    const loadVariablesMap = csvToMap(csvData);
+    for (const [key, value] of loadVariablesMap) {
+        addVariables(key, value);
+    }
+    displayVariables();
+}

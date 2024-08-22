@@ -46,8 +46,13 @@ function orderRecalculation() {
     makeGraphItems(filenamesList, nextGraphID);
 }
 
+// 選択した変数名のデータをCSVに保存
 function orderManagerSaveVariables() {
     orderSaveVariablesToCSV();
+}
+
+function orderManagerLoadVariables(csvData) {
+    orderLoadVariables(csvData);
 }
 
 // 一意のIDを生成する関数

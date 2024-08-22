@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <input id="file" type="file" name="upfile[]" webkitdirectory>
+    <input id="json-file-input" type="file" name="upfile[]" webkitdirectory>
 
     <div id="charts"></div>
 
@@ -19,6 +19,7 @@
         <input type="text" id="recalculationName" placeholder="Enter suffix (ex. Q1)">
         <button id="recalculationButton" class="recalculationButton" onclick="orderRecalculation()">Recalculation</button>
         <button id="saveButton" class="saveButton" onclick="orderManagerSaveVariables()">Save to CSV</button>
+        <input type="file" id="csv-file-input" accept=".csv">
     </div>
 </body>
 
@@ -39,6 +40,7 @@
 <script src="./draw-results.js"></script>
 <script src="./draw-recalculation.js"></script>
 <script src="./save-to-CSV.js"></script>
+<script src="./csv-to-map.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/moment-mini@2.24.0/moment.min.js"></script>
 <script src="./face-frame.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.0.0/math.min.js"></script>
