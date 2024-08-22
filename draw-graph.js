@@ -197,11 +197,11 @@ function drawGraph(filename, selectedLabels, graphID, directoryName) {
             const personName = filename.split('_').slice(-1)[0].replace('.json', '');
             filteredDatasets.forEach(dataset => {
                 if (dataset.label != 'dummy') {
-                    addVariables(`${dataset.label}_${personName}`, dataset.data);
+                    addVariables([`${dataset.label}_${personName}`], [dataset.data]);
                 }
             });
             emotionDatasets.forEach(dataset => {
-                addVariables(`${dataset.label}_${personName}`, dataset.data);
+                addVariables([`${dataset.label}_${personName}`], [dataset.data]);
             });
             displayVariables();
         })
@@ -263,9 +263,11 @@ function updateRange(graphID) {
 }
 
 // 利用可能変数リストに追加
-function addVariables(key, value) {
-    if (!variables.has(key)) {
-        variables.set(key, value);
+function addVariables(keys, values) {
+    for (i = 0; i < keys.length; i++) {
+        if (!variables.has(keys[i])) {
+            variables.set(keys[i], values[i]);
+        }
     }
 }
 
@@ -313,7 +315,7 @@ function evaluateFormula(graphID) {
     const resultData = results[1];
     const resultsChart = drawResults(graphID, resultData, variableName);
     chartsMap.set(graphID, resultsChart);
-    addVariables(variableName, resultData);
+    addVariables([variableName], [resultData]);
     displayVariables();
 }
 
@@ -324,9 +326,7 @@ function orderRecalculationGraph(graphID) {
 
     const newNames = results.names;
     const newData = results.data;
-    for (i = 0; i < newNames.length; i++) {
-        addVariables(newNames[i], newData[i]);
-    }
+    addVariables(newNames, newData);
     displayVariables();
 }
 
@@ -336,8 +336,8 @@ function orderSaveVariablesToCSV() {
 
 function orderLoadVariables(csvData) {
     const loadVariablesMap = csvToMap(csvData);
-    for (const [key, value] of loadVariablesMap) {
-        addVariables(key, value);
-    }
+    const keysArray = Array.from(loadVariablesMap.keys());
+    const valuesArray = Array.from(loadVariablesMap.values());
+    addVariables(keysArray, valuesArray);
     displayVariables();
 }
