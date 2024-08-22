@@ -329,3 +329,7 @@ function orderRecalculationGraph(graphID) {
     }
     displayVariables();
 }
+
+function orderSaveVariablesToCSV() {
+    saveVariablesToCSV(new Map(variables));
+}

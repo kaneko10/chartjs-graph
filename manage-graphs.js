@@ -46,6 +46,10 @@ function orderRecalculation() {
     makeGraphItems(filenamesList, nextGraphID);
 }
 
+function orderManagerSaveVariables() {
+    orderSaveVariablesToCSV();
+}
+
 // 一意のIDを生成する関数
 function generateUniqueId() {
     idCounter += 1;
