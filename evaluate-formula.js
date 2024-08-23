@@ -40,11 +40,15 @@ function getCalculationResult(variablesMap, graphID) {
                             }
                         }
                     }
+                    if(isNaN(result)) {
+                        result = 0;
+                    }
                     new_variable_data.push(result);
                 }
                 scopeMap.set(new_variable_name, new_variable_data);   // 利用可能な変数に計算結果を追加
 
-                console.log(new_variable_name);
+                // console.log(new_variable_name);
+                console.log(new_variable_data);
             }
         });
 
