@@ -23,8 +23,8 @@ function getCalculationResult(variablesMap, graphID) {
                     } else {
                         if (formula.includes('?')) {
                             // 変換が必要な場合('?'が含まれている)(ex. Emotion = Positive?Neutral?Negative: r_i)
-                            console.log(scope[variable_name]);
-                            console.log(scope)
+                            // console.log(scope[variable_name]);
+                            // console.log(scope)
                             if (scope[variable_name] === null) {    // nullなら0にする
                                 result = 0;
                             } else {
@@ -45,7 +45,6 @@ function getCalculationResult(variablesMap, graphID) {
                 scopeMap.set(new_variable_name, new_variable_data);   // 利用可能な変数に計算結果を追加
 
                 console.log(new_variable_name);
-                console.log(new_variable_data);
             }
         });
 
