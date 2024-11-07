@@ -31,7 +31,12 @@ function saveVariablesToCSV(variavlesMap) {
     for (let i = 0; i < maxArrayLength; i++) {
         let row = [];
         filteredMap.forEach((valueArray) => {
-            row.push(valueArray[i] || "");  // 配列が短い場合は空文字を挿入
+            // undefined または null をチェック
+            if (valueArray[i] !== undefined && valueArray[i] !== null) {
+                row.push(valueArray[i]);
+            } else {
+                row.push("");  // 値が存在しない場合は空文字を挿入
+            }
         });
         csvContent += row.join(",") + "\n";
     }
